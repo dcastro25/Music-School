@@ -1,0 +1,1 @@
+export { HeaderTeacher } from "./Header";
