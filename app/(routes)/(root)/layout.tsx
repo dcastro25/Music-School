@@ -20,7 +20,7 @@ export default function RootLayout({
 
                     {/* Main Content */}
                     <div className="flex flex-col flex-1 min-h-screen w-full">
-                    <Navbar/>
+                        <Navbar />
                         <main className="flex-1 w-full">{children}</main>
                     </div>
                 </div>

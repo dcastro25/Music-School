@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { Plus } from "lucide-react";
 import {
@@ -8,28 +8,36 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog";
-
 import { Button } from "@/components/ui/button";
-import { FormCreateCourse } from "./FormCreateCourse";
+import { CourseForm } from "../../[courseId]/components/CourseForm";
+import { useState } from "react";
+import { Course } from "@/app/generated/prisma/client";
 
-export function HeaderTeacher() {
+type HeaderTeacherProps = {
+    onCourseCreated?: (course: Course) => void;
+};
+
+export function HeaderTeacher({ onCourseCreated }: HeaderTeacherProps) {
+    const [open, setOpen] = useState(false);
+
     return (
-        <div className=" flex border border-border/30 bg-background-secondary justify-between py-2 px-10">
-
+        <div className="flex border border-border/30 bg-background-secondary justify-between py-2 px-10">
             <p>Crear Nuevo curso</p>
-            <Dialog>
+            <Dialog open={open} onOpenChange={setOpen}>
                 <DialogTrigger asChild>
-                    <Button variant={"default"}>
+                    <Button variant="default">
                         Crear Curso
                         <Plus />
                     </Button>
                 </DialogTrigger>
-
-                <DialogContent>
+                <DialogContent aria-describedby={undefined}>
                     <DialogHeader>
                         <DialogTitle>Crea tu curso</DialogTitle>
-                        <FormCreateCourse />
                     </DialogHeader>
+ z                   <CourseForm
+                        onSuccess={() => setOpen(false)}
+                        onCourseCreated={onCourseCreated}
+                    />
                 </DialogContent>
             </Dialog>
         </div>

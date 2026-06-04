@@ -7,8 +7,8 @@ import { Footer } from "./Components/Footer";
 export default function Home() {
     return (
         <div>
-            <Header/> 
-            <Footer/> 
+            <Header />
+            <Footer />
             <h1>Home - Componentes faltantes comentados</h1>
         </div>
     );

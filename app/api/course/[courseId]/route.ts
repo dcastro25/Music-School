@@ -1,15 +1,12 @@
 import { prisma } from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
 interface Params {
     params: Promise<{ courseId: string }>;
 }
 
-/**
- * GET /api/course/[courseId]
- * Obtiene un curso con todos sus detalles
- */
 export async function GET(req: NextRequest, context: Params) {
     try {
         const { courseId } = await context.params;
@@ -46,113 +43,34 @@ export async function GET(req: NextRequest, context: Params) {
     }
 }
 
-/**
- * PUT /api/course/[courseId]
- * Actualiza un curso
- */
-// export async function PUT(req: NextRequest, context: Params) {
-//     try {
-//         const { courseId } = await context.params;
-//         const body = await req.json();
+// export async function PATCH (req: Request, {params}: {params:Promise<{courseId:string}>}){
+//     try{
+//         // const {userId} = await auth();
+//         const {courseId} = await params;
+//         const value = await req.json()
 
-//         const {
-//             title,
-//             subtitle,
-//             description,
-//             category,
-//             subcategory,
-//             language,
-//             difficulty,
-//             imageUrl,
-//             price,
-//             isFree,
-//             hasCertificate,
-//             isPublic,
-//             targetAudience,
-//         } = body;
+//         // if(!userId){
+//         //     return new NextResponse("Unauthorized", {status:401})
+//         // }
 
 //         const course = await prisma.course.update({
-//             where: { id: courseId },
-//             data: {
-//                 ...(title && { title }),
-//                 ...(subtitle && { subtitle }),
-//                 ...(description && { description }),
-//                 ...(category && { category }),
-//                 ...(subcategory && { subcategory }),
-//                 ...(language && { language }),
-//                 ...(difficulty !== undefined && { difficulty }),
-//                 ...(imageUrl !== undefined && { imageUrl }),
-//                 ...(price !== undefined && { price }),
-//                 ...(isFree !== undefined && { isFree }),
-//                 ...(hasCertificate !== undefined && { hasCertificate }),
-//                 ...(isPublic !== undefined && { isPublic }),
-//                 ...(targetAudience && { targetAudience }),
+//             where:{
+//                 id: courseId,
+//                 // userId:userId
 //             },
-//             include: {
-//                 // modules: {
-//                 //     include: {
-//                 //         lessons: true,
-//                 //     },
-//                 // },
-//                 tags: true,
-//                 objectives: true,
-//                 requirements: true,
-//             },
+//             data:{
+//                 ...value
+//             }
 //         });
 
-//         return NextResponse.json(
-//             {
-//                 success: true,
-//                 message: "Curso actualizado exitosamente",
-//                 course,
-//             },
-//             { status: 200 },
-//         );
-//     } catch (error: any) {
-//         console.error("[PUT /api/course/[courseId]] Error:", error);
+//         return NextResponse.json(course)
 
-//         if (error.code === "P2025") {
-//             return NextResponse.json(
-//                 { success: false, message: "Curso no encontrado" },
-//                 { status: 404 },
-//             );
-//         }
+// } catch (error){
+//     console.log("[COURSE]", error);
 
-//         return NextResponse.json(
-//             { success: false, message: "Error al actualizar el curso" },
-//             { status: 500 },
-//         );
-//     }
+//     return new NextResponse("Internal Error", {status: 500})
 // }
-
-export async function PATCH (req: Request, {params}: {params:Promise<{courseId:string}>}){
-    try{
-        // const {userId} = await auth();
-        const {courseId} = await params;
-        const value = await req.json()
-
-        // if(!userId){
-        //     return new NextResponse("Unauthorized", {status:401})
-        // }
-
-        const course = await prisma.course.update({
-            where:{
-                id: courseId,
-                // userId:userId
-            },
-            data:{
-                ...value
-            }
-        });
-
-        return NextResponse.json(course)
-
-    } catch (error){
-        console.log("[COURSE]", error);
-
-        return new NextResponse("Internal Error", {status: 500})
-    }
-}
+// }
 
 export async function DELETE(req: NextRequest, context: Params) {
     try {
@@ -161,6 +79,9 @@ export async function DELETE(req: NextRequest, context: Params) {
         const course = await prisma.course.delete({
             where: { id: courseId },
         });
+
+        // Revalidar el caché de la página de cursos
+        revalidatePath("/teacher");
 
         return NextResponse.json(
             {
@@ -187,3 +108,41 @@ export async function DELETE(req: NextRequest, context: Params) {
     }
 }
 
+export async function PATCH(
+    req: Request,
+    { params }: { params: Promise<{ courseId: string }> },
+) {
+    try {
+        const { courseId } = await params;
+        const values = await req.json();
+
+        // 👇 Verifica qué llega exactamente
+        console.log("[PATCH /api/course] courseId:", courseId);
+        console.log("[PATCH /api/course] body recibido:", values);
+
+        const course = await prisma.course.update({
+            where: { id: courseId },
+            data: {
+                // 👇 Manejo explícito de isPublished para evitar que
+                // Prisma ignore el valor false al hacer spread
+                ...(typeof values.isPublished === "boolean" && {
+                    isPublished: values.isPublished,
+                }),
+                // el resto de campos que no sean isPublished
+                ...Object.fromEntries(
+                    Object.entries(values).filter(([k]) => k !== "isPublished")
+                ),
+            },
+        });
+
+        console.log("[PATCH /api/course] curso actualizado:", course.isPublished);
+
+        // Revalidar el caché de la página de cursos
+        revalidatePath("/teacher");
+
+        return NextResponse.json(course, { status: 200 });
+    } catch (error) {
+        console.error("[PATCH /api/course] Error:", error);
+        return new NextResponse("Internal Error", { status: 500 });
+    }
+}

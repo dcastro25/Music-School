@@ -1,0 +1,1 @@
+export {CourseMedia} from "./courseMedia"

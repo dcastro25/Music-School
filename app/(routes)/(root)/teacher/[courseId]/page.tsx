@@ -1,7 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import React from "react";
 import { FormCreateCourse } from "../components/Header/FormCreateCourse";
-import { FormCourse } from "./components/CourseForm";
+import { CourseForm} from "./components/CourseForm";
 // import { HeaderCourse } from "./components";
 
 
@@ -34,7 +34,7 @@ export default async function CoursePage({
       {/* aquí sí renderizas OTROS componentes */}
       {/* <HeaderCourse idCourse={courseId} isPublished={course.isPublished} /> */}
 
-        <FormCourse/>
+        <CourseForm/>
     </div>
   );
 }

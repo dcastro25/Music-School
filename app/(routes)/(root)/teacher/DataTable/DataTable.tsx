@@ -14,7 +14,7 @@ import {
 } from "@tanstack/react-table";
 
 import { Course } from "@/app/generated/prisma/client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
     CheckCircle,
     ChevronDown,
@@ -62,7 +62,7 @@ function StatusBadge({ value }: { value: boolean }) {
     );
 }
 
-export function DataTable({ DataTable }: DataTableProps) {
+export function DataTable({ DataTable: initialData }: DataTableProps) {
     const searchParams = useSearchParams();
     const search = searchParams.get("search") ?? "";
     const [sorting, setSorting] = useState<SortingState>([]);
@@ -71,6 +71,11 @@ export function DataTable({ DataTable }: DataTableProps) {
         pageIndex: 0,
         pageSize: 10,
     });
+    const [data, setData] = useState<Course[]>(initialData);
+
+    useEffect(() => {
+        setData(initialData);
+    }, [initialData]);
 
     const formatPrice = (value: number) =>
         new Intl.NumberFormat("es-CO", {
@@ -211,13 +216,28 @@ export function DataTable({ DataTable }: DataTableProps) {
                 <Actions
                     courseId={row.original.id}
                     CourseName={row.original.courseName}
+                    isPublished={row.original.isPublished}
+                    onPublishChange={(newState) => {
+                        // Actualiza el estado local del curso
+                        setData(
+                            data.map((c) =>
+                                c.id === row.original.id
+                                    ? { ...c, isPublished: newState }
+                                    : c,
+                            ),
+                        );
+                    }}
+                    onDelete={(id: string) => {
+                        // Elimina el curso del estado local
+                        setData(data.filter((c) => c.id !== id));
+                    }}
                 />
             ),
         },
     ];
 
     const table = useReactTable<Course>({
-        data: DataTable,
+        data: data,
         columns,
         columnResizeMode,
         state: {

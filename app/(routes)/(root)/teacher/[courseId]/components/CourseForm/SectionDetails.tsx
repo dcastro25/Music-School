@@ -1,122 +1,164 @@
-"use client";
-
-import { useFormContext } from "react-hook-form";
-import { FormField, FormItem, FormLabel, FormControl } from "@/components/ui/form";
+import { Button } from "@/components/ui/button";
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Target } from "lucide-react";
-import { DURATIONS, LEVELS, FormValues } from "./FormCourse.form";
+import { Label } from "@/components/ui/label";
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
+import { TabsContent } from "@/components/ui/tabs";
+import { Textarea } from "@/components/ui/textarea";
+import {
+    Award,
+    BarChart3,
+    BookOpen,
+    FileText,
+    ImageIcon,
+    Plus,
+    Sparkles,
+    Target,
+    Trash2,
+    Upload,
+    Video,
+    X,
+} from "lucide-react";
 
-export function SectionDetails() {
-    const form = useFormContext<FormValues>();
+import { useObjectives } from "../../hooks/useObjetives";
+
+export default function Sectiondetails() {
+    const { addObjective, removeObjective, objectives, setObjectives } =
+        useObjectives();
 
     return (
-        <section className="rounded-xl border border-border bg-card p-6 space-y-6">
-            <div className="flex items-center gap-2 pb-2 border-b border-border">
-                <Target className="h-4 w-4 text-primary" />
-                <h2 className="text-base font-semibold text-foreground">Detalles del curso</h2>
-            </div>
-
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {/* Precio */}
-                <FormField
-                    control={form.control}
-                    name="price"
-                    render={({ field, fieldState }) => (
-                        <FormItem className="space-y-1.5">
-                            <FormLabel className="text-xs font-medium text-primary uppercase tracking-wide">
-                                Precio (COP) <span className="text-destructive">*</span>
-                            </FormLabel>
-                            <FormControl>
-                                <div className="relative">
-                                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground text-sm">$</span>
+        <>
+            <TabsContent value="details" className="space-y-6">
+                <div className="grid gap-6 lg:grid-cols-2">
+                    {/* Learning Objectives */}
+                    <Card className="border-border/50 bg-card/50 backdrop-blur-sm">
+                        <CardHeader>
+                            <CardTitle className="flex items-center gap-2 text-foreground">
+                                <Target className="h-5 w-5 text-accent" />
+                                Objetivos de Aprendizaje
+                            </CardTitle>
+                            <CardDescription>
+                                ¿Qué aprenderán los estudiantes?
+                            </CardDescription>
+                        </CardHeader>
+                        <CardContent className="space-y-3">
+                            {objectives.map((objective, index) => (
+                                <div
+                                    key={objective.id}
+                                    className="flex items-center gap-2"
+                                >
+                                    <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-accent/10 text-accent text-xs font-medium">
+                                        {index + 1}
+                                    </div>
                                     <Input
-                                        type="number"
-                                        className={`h-10 pl-7 bg-input border text-foreground placeholder:text-muted-foreground rounded-lg focus-visible:ring-1 focus-visible:ring-primary focus-visible:border-primary transition-colors ${
-                                            fieldState.error ? "border-destructive" : "border-border"
-                                        }`}
-                                        placeholder="0"
-                                        {...field}
+                                        value={objective.text}
+                                        onChange={(e) =>
+                                            setObjectives(
+                                                objectives.map((o) =>
+                                                    o.id === objective.id
+                                                        ? {
+                                                              ...o,
+                                                              text: e.target
+                                                                  .value,
+                                                          }
+                                                        : o,
+                                                ),
+                                            )
+                                        }
+                                        placeholder="Ej: Dominar los hooks de React"
+                                        className="flex-1 bg-input border-border/50"
                                     />
+                                    <Button
+                                        variant="ghost"
+                                        size="icon"
+                                        className="shrink-0 text-muted-foreground hover:text-destructive"
+                                        onClick={() =>
+                                            removeObjective(objective.id)
+                                        }
+                                    >
+                                        <Trash2 className="h-4 w-4" />
+                                    </Button>
                                 </div>
-                            </FormControl>
-                            {fieldState.error && (
-                                <p className="text-[11px] text-destructive flex items-center gap-1">
-                                    ⚠ {fieldState.error.message}
-                                </p>
-                            )}
-                        </FormItem>
-                    )}
-                />
+                            ))}
+                            <Button
+                                variant="outline"
+                                size="sm"
+                                className="w-full mt-2 gap-2 border-dashed"
+                                onClick={addObjective}
+                            >
+                                <Plus className="h-4 w-4" />
+                                Añadir Objetivo
+                            </Button>
+                        </CardContent>
+                    </Card>
 
-                {/* Duración */}
-                <FormField
-                    control={form.control}
-                    name="duration"
-                    render={({ field, fieldState }) => (
-                        <FormItem className="space-y-1.5">
-                            <FormLabel className="text-xs font-medium text-primary uppercase tracking-wide">
-                                Duración <span className="text-destructive">*</span>
-                            </FormLabel>
-                            <Select onValueChange={field.onChange} value={field.value}>
-                                <FormControl>
-                                    <SelectTrigger className={`h-10 bg-input border text-foreground rounded-lg focus:ring-1 focus:ring-primary focus:border-primary transition-colors ${
-                                        fieldState.error ? "border-destructive" : "border-border"
-                                    }`}>
-                                        <SelectValue placeholder="Selecciona duración" />
-                                    </SelectTrigger>
-                                </FormControl>
-                                <SelectContent>
-                                    {DURATIONS.map((dur) => (
-                                        <SelectItem key={dur.value} value={dur.value}>
-                                            {dur.label}
-                                        </SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
-                            {fieldState.error && (
-                                <p className="text-[11px] text-destructive flex items-center gap-1">
-                                    ⚠ {fieldState.error.message}
-                                </p>
-                            )}
-                        </FormItem>
-                    )}
-                />
-
-                {/* Nivel */}
-                <FormField
-                    control={form.control}
-                    name="level"
-                    render={({ field, fieldState }) => (
-                        <FormItem className="space-y-1.5">
-                            <FormLabel className="text-xs font-medium text-primary uppercase tracking-wide">
-                                Nivel <span className="text-destructive">*</span>
-                            </FormLabel>
-                            <Select onValueChange={field.onChange} value={field.value}>
-                                <FormControl>
-                                    <SelectTrigger className={`h-10 bg-input border text-foreground rounded-lg focus:ring-1 focus:ring-primary focus:border-primary transition-colors ${
-                                        fieldState.error ? "border-destructive" : "border-border"
-                                    }`}>
-                                        <SelectValue placeholder="Selecciona nivel" />
-                                    </SelectTrigger>
-                                </FormControl>
-                                <SelectContent>
-                                    {LEVELS.map((lvl) => (
-                                        <SelectItem key={lvl.value} value={lvl.value}>
-                                            {lvl.label}
-                                        </SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
-                            {fieldState.error && (
-                                <p className="text-[11px] text-destructive flex items-center gap-1">
-                                    ⚠ {fieldState.error.message}
-                                </p>
-                            )}
-                        </FormItem>
-                    )}
-                />
-            </div>
-        </section>
+                    {/* Materials Included */}
+                    <Card className="border-border/50 bg-card/50 backdrop-blur-sm">
+                        <CardHeader>
+                            <CardTitle className="flex items-center gap-2 text-foreground">
+                                <FileText className="h-5 w-5 text-emerald-400" />
+                                Materiales Incluidos
+                            </CardTitle>
+                            <CardDescription>
+                                Recursos adicionales para los estudiantes
+                            </CardDescription>
+                        </CardHeader>
+                        <CardContent className="space-y-4">
+                            <div className="grid grid-cols-2 gap-3">
+                                {[
+                                    {
+                                        icon: Video,
+                                        label: "Horas de video",
+                                        value: "12+",
+                                    },
+                                    {
+                                        icon: FileText,
+                                        label: "Artículos",
+                                        value: "25",
+                                    },
+                                    {
+                                        icon: BookOpen,
+                                        label: "Ejercicios",
+                                        value: "50+",
+                                    },
+                                    {
+                                        icon: Award,
+                                        label: "Proyectos",
+                                        value: "5",
+                                    },
+                                ].map((item, i) => (
+                                    <div
+                                        key={i}
+                                        className="flex items-center gap-3 p-3 rounded-lg bg-muted/30 border border-border/30"
+                                    >
+                                        <item.icon className="h-5 w-5 text-primary" />
+                                        <div>
+                                            <p className="text-sm font-medium text-foreground">
+                                                {item.value}
+                                            </p>
+                                            <p className="text-xs text-muted-foreground">
+                                                {item.label}
+                                            </p>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </CardContent>
+                    </Card>
+                </div>
+            </TabsContent>
+        </>
     );
 }

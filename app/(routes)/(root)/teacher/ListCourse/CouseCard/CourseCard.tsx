@@ -1,3 +1,4 @@
+
 "use client";
 
 import Image from "next/image";
@@ -29,6 +30,9 @@ export function CourseCard({ course }: CourseCardProps) {
 
     const [expanded, setExpanded] = useState(false);
 
+    // ✅ Estado local que sincroniza el badge con Actions
+    const [published, setPublished] = useState(isPublished);
+
     const safeImage =
         imageUrl && isValidUrl(imageUrl)
             ? imageUrl
@@ -36,7 +40,6 @@ export function CourseCard({ course }: CourseCardProps) {
 
     return (
         <div className="bg-card border border-border rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 group w-full lg:max-w-[320px]">
-           
             <div className="relative w-full aspect-[4/3] md:aspect-auto md:h-45 overflow-hidden">
                 <Image
                     src={safeImage}
@@ -45,26 +48,22 @@ export function CourseCard({ course }: CourseCardProps) {
                     className="object-cover transition-transform duration-500 group-hover:scale-110"
                 />
 
-             
                 <span className="absolute top-2 left-2 bg-black/55 text-white text-[13px] px-2 py-0.5 rounded-full leading-tight">
                     {level || "Sin nivel"}
                 </span>
 
-              
                 <span
                     className={`absolute top-2 right-2 text-[13px] px-2 py-0.5 rounded-md font-medium leading-tight ${
-                        isPublished
+                        published
                             ? "bg-emerald-500/90 text-white"
                             : "bg-gray-700/90 text-gray-200"
                     }`}
                 >
-                    {isPublished ? "✓ Publicado" : "Borrador"}
+                    {published ? "✓ Publicado" : "Borrador"}
                 </span>
             </div>
 
-          
             <div className="p-2.5 md:p-5">
-                
                 <div className="flex items-start justify-between gap-1.5 mb-2">
                     <h3 className="text-[13px] leading-snug sm:text-base md:text-base font-semibold text-foreground line-clamp-2 flex-1">
                         {courseName}
@@ -80,7 +79,6 @@ export function CourseCard({ course }: CourseCardProps) {
                     </button>
                 </div>
 
-                
                 <div className="md:hidden grid grid-cols-2 gap-x-2 gap-y-1 text-[11px] text-muted-foreground mb-2">
                     <div className="flex items-center gap-1">
                         <Clock className="w-3 h-3 text-primary shrink-0" />
@@ -95,7 +93,6 @@ export function CourseCard({ course }: CourseCardProps) {
                         <span>120 estudiantes</span>
                     </div>
                 </div>
-
 
                 <div className="hidden md:flex items-center gap-4 text-sm text-muted-foreground mb-3">
                     <div className="flex items-center gap-1">
@@ -112,7 +109,6 @@ export function CourseCard({ course }: CourseCardProps) {
                     </div>
                 </div>
 
-         
                 <div
                     className={`md:hidden overflow-hidden transition-all duration-500 ${
                         expanded ? "max-h-40 mb-2" : "max-h-0"
@@ -140,7 +136,6 @@ export function CourseCard({ course }: CourseCardProps) {
                     </button>
                 </div>
 
-               
                 <div className="hidden md:flex items-center justify-between">
                     <p className="text-primary font-bold text-lg">
                         {price ? `$${price.toLocaleString("es-CO")}` : "Gratis"}
@@ -148,12 +143,19 @@ export function CourseCard({ course }: CourseCardProps) {
                             COP
                         </span>
                     </p>
-                    <button className="border border-primary text-primary text-xs px-4 py-1.5 rounded-lg hover:bg-primary hover:text-primary-foreground transition whitespace-nowrap">
-                        Ver curso
-                    </button>
-                
+                    <div className="flex items-center gap-2">
+                        <button className="border border-primary text-primary text-xs px-4 py-1.5 rounded-lg hover:bg-primary hover:text-primary-foreground transition whitespace-nowrap">
+                            Ver curso
+                        </button>
+                        {/* ✅ onPublishChange sincroniza el badge */}
+                        <Actions
+                            courseId={id}
+                            CourseName={courseName}
+                            isPublished={published}
+                            onPublishChange={setPublished}
+                        />
+                    </div>
                 </div>
-
             </div>
         </div>
     );

@@ -31,35 +31,30 @@ const requirementSchema = z.object({
 });
 
 const advancedCourseFormSchema = z.object({
-    // Basic info
     title: z.string().min(3, "El título debe tener mínimo 3 caracteres"),
     subtitle: z.string().optional(),
     description: z
         .string()
         .min(10, "La descripción debe tener mínimo 10 caracteres"),
 
-    // Metadata
     category: z.string().min(1, "La categoría es requerida"),
     subcategory: z.string().optional(),
     language: z.string().default("es"),
     difficulty: z.number().min(0).max(100).default(50),
 
-    // Media
     imageUrl: z
         .string()
         .url("URL de imagen inválida")
         .optional()
         .or(z.literal("")),
 
-    // Pricing
     price: z.number().min(0).default(0),
     isFree: z.boolean().default(false),
 
-    // Settings
     hasCertificate: z.boolean().default(true),
     isPublic: z.boolean().default(true),
 
-    // Content
+
     modules: z.array(moduleSchema).min(1, "Al menos un módulo es requerido"),
     tags: z.array(z.string()).default([]),
     objectives: z

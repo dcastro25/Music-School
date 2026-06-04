@@ -1,5 +1,7 @@
+// Actions.type.ts
 export type ActionsProps = {
     courseId: string;
     CourseName: string;
-    onDelete?: (id: string) => void;
+    isPublished: boolean;
+    onPublishChange?: (state: boolean) => void; 
 };

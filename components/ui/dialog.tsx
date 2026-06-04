@@ -89,14 +89,14 @@ function DialogContent({
                     // Base
                     "fixed top-1/2 left-1/2 z-50 w-full",
                     "-translate-x-1/2 -translate-y-1/2",
-                    "rounded-2xl bg-popover text-popover-foreground",
+                    "rounded-2xl bg-background text-popover-foreground",
                     "p-6 md:p-8",
                     "shadow-xl ring-1 ring-foreground/10",
 
                     // Responsive width (🔥 clave)
                     "max-w-[calc(100%-1.5rem)]",
-                    "sm:max-w-2xl",
-                    "lg:max-w-4xl",
+                    "sm:max-w-6xl",
+                    "lg:max-w-8xl",
 
                     // Scroll interno
                     "max-h-[90vh] overflow-y-auto",

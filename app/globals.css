@@ -40,12 +40,12 @@
 
 
     --background: #0e0907;
-    --background-secondary: #18120d; /* 👈 un poco más claro */
+    --background-secondary: #18120d; 
 
-    --card: #1a140f; /* 👈 más separado del fondo */
-    --input: #241b15; /* 👈 inputs más visibles */
+    --card: #1a140f; 
+    --input: #241b15; 
 
-    --border: #8f856c; /* 👈 un pelín más claro */
+    --border: #8f856c; 
 
     --background: #0e0907;
     --background-secondary: #130f0b;
@@ -63,7 +63,7 @@
     --muted: #1e1915;
     --muted-foreground: #867d66;
 
-    /* 🎨 ACCENT */
+
     --accent: #1c1612;
     --accent-foreground: #e49e22;
 

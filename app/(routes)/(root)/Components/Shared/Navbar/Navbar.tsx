@@ -4,15 +4,14 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { useSearch } from "@/hooks/useSearch";
-import { BellRing, Search } from "lucide-react";
-import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { BellRing, Search, X } from "lucide-react";
 import { useNavbarUI } from "./useNavbar";
 
 export function Navbar() {
-    const { isAtTop, openSearch,setOpenSearch}= useNavbarUI()
-    const {setValue, value} = useSearch()
-    return(
+    const { isAtTop, openSearch, setOpenSearch } = useNavbarUI();
+    const { setValue, value, clearSearch } = useSearch();
+
+    return (
         <div className="sticky z-40 w-full top-0 border-b border-ring/30 bg-bgPrimary flex flex-col transition-[width,margin] duration-200 ease-linear">
             {/* Barra informativa */}
             <div
@@ -77,10 +76,19 @@ export function Navbar() {
                             <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
                             <Input
                                 placeholder="Buscar..."
-                                className="pl-9 bg-white/5 border-white/10 focus-visible:ring-0"
+                                className="pl-9 pr-9 bg-white/5 border-white/10 focus-visible:ring-0"
                                 value={value}
                                 onChange={(e) => setValue(e.target.value)}
                             />
+                            {value && (
+                                <button
+                                    type="button"
+                                    onClick={clearSearch}
+                                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                                >
+                                    <X className="size-4" />
+                                </button>
+                            )}
                         </div>
                     </div>
                 </div>
@@ -114,8 +122,17 @@ export function Navbar() {
                             placeholder="Buscar..."
                             value={value}
                             onChange={(e) => setValue(e.target.value)}
-                            className="pl-9 border-0 bg-transparent focus-visible:border-none text-primary-text placeholder:text-muted-foreground"
+                            className="pl-9 pr-9 border-0 bg-transparent focus-visible:border-none text-primary-text placeholder:text-muted-foreground"
                         />
+                        {value && (
+                            <button
+                                type="button"
+                                onClick={clearSearch}
+                                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                            >
+                                <X className="size-4" />
+                            </button>
+                        )}
                     </div>
                     <Button variant="outline">
                         <BellRing />
