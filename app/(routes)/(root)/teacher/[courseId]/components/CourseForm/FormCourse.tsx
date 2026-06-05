@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Form } from "@/components/ui/form";
@@ -50,12 +50,15 @@ import axios from "axios";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
+type FormValues = z.infer<typeof formSchema>;
+
 type Props = {
+    course?: any;
     onSuccess?: () => void;
     onCourseCreated?: (course: any) => void;
 };
 
-export function CourseForm({ onSuccess, onCourseCreated }: Props) {
+export function CourseForm({ course, onSuccess, onCourseCreated }: Props) {
     const router = useRouter();
     const [activeTab, setActiveTab] = useState("basic");
     const {
@@ -70,40 +73,60 @@ export function CourseForm({ onSuccess, onCourseCreated }: Props) {
     const [isPublic, setIsPublic] = useState(true);
     const formProgress = 65;
 
-    const form = useForm<z.infer<typeof formSchema>>({
-        resolver: zodResolver(formSchema),
+    const form = useForm<FormValues>({
+        resolver: zodResolver(formSchema) as any,
         defaultValues: {
-            courseName: "",
-            category: "",
-            description: "",
-            price: "",
-            duration: "",
-            level: "",
-            imageUrl: "",
-            slug: "",
+            courseName: course?.courseName || "",
+            category: course?.category || "",
+            description: course?.description || "",
+            price: course?.price ?? 0,
+            duration: course?.duration || "",
+            level: course?.level || "",
+            imageUrl: course?.imageUrl || "",
+            slug: course?.slug || "",
         },
     });
 
-    const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    useEffect(() => {
+        if (course) {
+            form.reset({
+                courseName: course.courseName,
+                category: course.category,
+                description: course.description,
+                price: course.price,
+                duration: course.duration,
+                level: course.level,
+                imageUrl: course.imageUrl,
+                slug: course.slug,
+            });
+        }
+    }, [course]);
+
+    const onSubmit = async (values: FormValues) => {
         try {
-            const rest = await axios.post("/api/course", values);
-            toast.success("Curso creado correctamente 🎉");
+            if (course) {
+                // ✏️ EDITAR
+                await axios.patch(`/api/course/${course.id}`, values);
+                toast.success("Curso actualizado ✏️");
+                router.push("/teacher")
+            } else {
+                // ➕ CREAR
+                const res = await axios.post("/api/course", values);
+                toast.success("Curso creado 🎉");
 
-            const createdCourse = rest.data?.course ?? rest.data;
+                const createdCourse = res.data?.course ?? res.data;
 
-            if (onCourseCreated && createdCourse) {
-                onCourseCreated(createdCourse);
+                if (onCourseCreated && createdCourse) {
+                    onCourseCreated(createdCourse);
+                }
             }
 
+            router.refresh();
             onSuccess?.();
-
-
         } catch (error: any) {
             const message = error.response?.data;
             toast.error(
-                typeof message === "string" && message.length > 0
-                    ? message
-                    : "Ha ocurrido un error inesperado",
+                typeof message === "string" ? message : "Error al guardar",
             );
         }
     };
@@ -122,8 +145,10 @@ export function CourseForm({ onSuccess, onCourseCreated }: Props) {
                                 <BookOpen className="h-5 w-5 text-primary" />
                             </div>
                             <div>
-                                <h1 className="text-lg font-semibold text-foreground">
-                                    Crear Nuevo Curso
+                                <h1>
+                                    {course
+                                        ? "Editar Curso"
+                                        : "Crear Nuevo Curso"}
                                 </h1>
                                 <p className="text-xs text-muted-foreground">
                                     Completa todos los campos requeridos
@@ -170,7 +195,7 @@ export function CourseForm({ onSuccess, onCourseCreated }: Props) {
                                 className="gap-2 bg-primary hover:bg-primary/90"
                             >
                                 <Send className="h-4 w-4" />
-                                <span className="hidden sm:inline">Crear</span>
+                                <span>{course ? "Actualizar" : "Crear"}</span>
                             </Button>
                         </div>
                     </div>
@@ -228,7 +253,7 @@ export function CourseForm({ onSuccess, onCourseCreated }: Props) {
                             </TabsList>
 
                             {/* Tab: Básico */}
-                            <SectionBasic form={form} />
+                            <SectionBasic form={form} course={course}/>
 
                             {/* Tab: Contenido */}
                             <TabsContent value="content" className="space-y-6">

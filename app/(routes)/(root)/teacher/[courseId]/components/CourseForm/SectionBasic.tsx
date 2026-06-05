@@ -17,22 +17,11 @@ import {
 } from "@/components/ui/select";
 import { TabsContent } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
-import {
-    DollarSign,
-    ImageIcon,
-    Sparkles,
-    Star,
-    Upload,
-    Video,
-} from "lucide-react";
- 
-import { useTags } from "../../hooks/useTag";
-import { useModules } from "../../hooks/useModules";
+import { DollarSign, Sparkles, Star } from "lucide-react";
+
 import { useState } from "react";
 import { Switch } from "@/components/ui/switch";
 import { UseFormReturn } from "react-hook-form";
-import { formSchema } from "./FormCourse.form";
-import { z } from "zod";
 import {
     FormControl,
     FormField,
@@ -40,17 +29,19 @@ import {
     FormMessage,
 } from "@/components/ui/form";
 import { generateSlug } from "./SlugGenerator";
+
+import { FormValues } from "./FormCourse.form";
 import { CourseMedia } from "../courseMedia";
 
-
 type Props = {
-    form: UseFormReturn<z.infer<typeof formSchema>>;
+    form: UseFormReturn<FormValues>;
+    course: {
+        id: string;
+        imageUrl?: string | null;
+    };
 };
 
-export default function SectionBasic({ form }: Props) {
-    const { tags } = useTags();
-    const { modules } = useModules();
-
+export default function SectionBasic({ form, course }: Props) {
     const [price, setPrice] = useState(0);
     const [isFree, setIsFree] = useState(false);
 
@@ -354,26 +345,30 @@ export default function SectionBasic({ form }: Props) {
                                             />
                                         </div>
                                         <div className="flex gap-2">
-                                            {[300, 490, 7900, 9900, 14900].map((p) => (
-                                                <Button
-                                                    key={p}
-                                                    variant={
-                                                        price === p
-                                                            ? "default"
-                                                            : "outline"
-                                                    }
-                                                    size="sm"
-                                                    onClick={() => setPrice(p)}
-                                                    type="button"
-                                                    className={
-                                                        price === p
-                                                            ? "bg-primary"
-                                                            : ""
-                                                    }
-                                                >
-                                                    ${p}
-                                                </Button>
-                                            ))}
+                                            {[300, 490, 7900, 9900, 14900].map(
+                                                (p) => (
+                                                    <Button
+                                                        key={p}
+                                                        variant={
+                                                            price === p
+                                                                ? "default"
+                                                                : "outline"
+                                                        }
+                                                        size="sm"
+                                                        onClick={() =>
+                                                            setPrice(p)
+                                                        }
+                                                        type="button"
+                                                        className={
+                                                            price === p
+                                                                ? "bg-primary"
+                                                                : ""
+                                                        }
+                                                    >
+                                                        ${p}
+                                                    </Button>
+                                                ),
+                                            )}
                                         </div>
                                     </div>
                                 )}
@@ -383,7 +378,10 @@ export default function SectionBasic({ form }: Props) {
                 </div>
 
                 {/* Sidebar - Media */}
-                <CourseMedia/>
+                <CourseMedia
+                    imageCourse={form.watch("imageUrl")}
+                    onImageChange={(url: string) => form.setValue("imageUrl", url)}
+                />
             </div>
         </TabsContent>
     );
