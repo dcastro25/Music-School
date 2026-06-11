@@ -9,7 +9,7 @@ const courseSchema = z.object({
     courseName: z.string().min(1),
     category: z.string().min(1),
     description: z.string().optional(),
-    price: z.union([z.number(), z.string()]),
+    price: z.preprocess((val) => Math.round(Number(val)), z.number().int().min(0)),
     duration: z.string(),
     level: z.string(),
     imageUrl: z.string().optional(),
@@ -30,7 +30,7 @@ export async function POST(req: NextRequest) {
         if (existingCourse) {
             return NextResponse.json(
                 { success: false, message: "El slug ya existe" },
-                { status: 400 }
+                { status: 400 },
             );
         }
 
@@ -60,7 +60,6 @@ export async function POST(req: NextRequest) {
             success: true,
             course,
         });
-
     } catch (error: any) {
         console.error(error);
 
@@ -70,7 +69,7 @@ export async function POST(req: NextRequest) {
                     success: false,
                     errors: error.issues,
                 },
-                { status: 400 }
+                { status: 400 },
             );
         }
 
@@ -79,7 +78,7 @@ export async function POST(req: NextRequest) {
                 success: false,
                 message: "Error al crear el curso",
             },
-            { status: 500 }
+            { status: 500 },
         );
     }
 }

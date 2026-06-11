@@ -1,7 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
-import { z } from "zod";
 
 interface Params {
     params: Promise<{ courseId: string }>;
@@ -14,14 +13,6 @@ export async function GET(req: NextRequest, context: Params) {
         const course = await prisma.course.findUnique({
             where: { id: courseId },
             include: {
-                modules: {
-                    include: {
-                        lessons: true,
-                    },
-                },
-                tags: true,
-                objectives: true,
-                requirements: true,
                 chapters: true,
             },
         });
@@ -43,35 +34,6 @@ export async function GET(req: NextRequest, context: Params) {
     }
 }
 
-// export async function PATCH (req: Request, {params}: {params:Promise<{courseId:string}>}){
-//     try{
-//         // const {userId} = await auth();
-//         const {courseId} = await params;
-//         const value = await req.json()
-
-//         // if(!userId){
-//         //     return new NextResponse("Unauthorized", {status:401})
-//         // }
-
-//         const course = await prisma.course.update({
-//             where:{
-//                 id: courseId,
-//                 // userId:userId
-//             },
-//             data:{
-//                 ...value
-//             }
-//         });
-
-//         return NextResponse.json(course)
-
-// } catch (error){
-//     console.log("[COURSE]", error);
-
-//     return new NextResponse("Internal Error", {status: 500})
-// }
-// }
-
 export async function DELETE(req: NextRequest, context: Params) {
     try {
         const { courseId } = await context.params;
@@ -80,7 +42,6 @@ export async function DELETE(req: NextRequest, context: Params) {
             where: { id: courseId },
         });
 
-        // Revalidar el caché de la página de cursos
         revalidatePath("/teacher");
 
         return NextResponse.json(
@@ -116,28 +77,39 @@ export async function PATCH(
         const { courseId } = await params;
         const values = await req.json();
 
-        // 👇 Verifica qué llega exactamente
         console.log("[PATCH /api/course] courseId:", courseId);
         console.log("[PATCH /api/course] body recibido:", values);
 
+
+
+        const camposPermitidos = [
+            "courseName",
+            "category",
+            "description",
+            "price",
+            "duration",
+            "level",
+            "imageUrl",
+            "slug",
+            "isPublished",
+        ];
+
+        const dataToUpdate = Object.fromEntries(
+            Object.entries(values).filter(([k]) =>
+                camposPermitidos.includes(k),
+            ),
+        );
+
         const course = await prisma.course.update({
             where: { id: courseId },
-            data: {
-                // 👇 Manejo explícito de isPublished para evitar que
-                // Prisma ignore el valor false al hacer spread
-                ...(typeof values.isPublished === "boolean" && {
-                    isPublished: values.isPublished,
-                }),
-                // el resto de campos que no sean isPublished
-                ...Object.fromEntries(
-                    Object.entries(values).filter(([k]) => k !== "isPublished")
-                ),
-            },
+            data: dataToUpdate,
         });
 
-        console.log("[PATCH /api/course] curso actualizado:", course.isPublished);
+        console.log(
+            "[PATCH /api/course] curso actualizado:",
+            course.isPublished,
+        );
 
-        // Revalidar el caché de la página de cursos
         revalidatePath("/teacher");
 
         return NextResponse.json(course, { status: 200 });

@@ -14,30 +14,25 @@ interface Module {
 }
 
 export function useModules() {
-    const [modules, setModules] = useState<Module[]>([
-        {
-            id: "1",
-            title: "Módulo 1: Introducción",
-            lessons: [],
-        },
-    ]);
+    const [modules, setModules] = useState<Module[]>([]);
 
-    const addModule = () => {
+    const addModule = (title: string) => {
         const newModule: Module = {
             id: Date.now().toString(),
-            title: `Módulo ${modules.length + 1}`,
+            title,
             lessons: [],
         };
-        setModules([...modules, newModule]);
+
+        setModules((prev) => [...prev, newModule]);
     };
 
     const removeModule = (moduleId: string) => {
-        setModules(modules.filter((m) => m.id !== moduleId));
+        setModules((prev) => prev.filter((m) => m.id !== moduleId));
     };
 
     const addLesson = (moduleId: string) => {
-        setModules(
-            modules.map((m) =>
+        setModules((prev) =>
+            prev.map((m) =>
                 m.id === moduleId
                     ? {
                           ...m,
@@ -51,21 +46,21 @@ export function useModules() {
                               },
                           ],
                       }
-                    : m,
-            ),
+                    : m
+            )
         );
     };
 
     const removeLesson = (moduleId: string, lessonId: string) => {
-        setModules(
-            modules.map((m) =>
+        setModules((prev) =>
+            prev.map((m) =>
                 m.id === moduleId
                     ? {
                           ...m,
                           lessons: m.lessons.filter((l) => l.id !== lessonId),
                       }
-                    : m,
-            ),
+                    : m
+            )
         );
     };
 
@@ -75,6 +70,6 @@ export function useModules() {
         removeModule,
         addLesson,
         removeLesson,
-        setModules
+        setModules,
     };
 }

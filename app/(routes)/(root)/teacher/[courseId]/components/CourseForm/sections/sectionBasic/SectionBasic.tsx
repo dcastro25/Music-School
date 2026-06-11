@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import {
     Card,
     CardContent,
@@ -17,10 +16,8 @@ import {
 } from "@/components/ui/select";
 import { TabsContent } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
-import { DollarSign, Sparkles, Star } from "lucide-react";
+import { Sparkles } from "lucide-react";
 
-import { useState } from "react";
-import { Switch } from "@/components/ui/switch";
 import { UseFormReturn } from "react-hook-form";
 import {
     FormControl,
@@ -28,23 +25,22 @@ import {
     FormItem,
     FormMessage,
 } from "@/components/ui/form";
-import { generateSlug } from "./SlugGenerator";
+import { generateSlug } from "../../utiils";
 
-import { FormValues } from "./FormCourse.form";
-import { CourseMedia } from "../courseMedia";
+import { FormValues } from "../../CourseForm.form";
+import { CourseMedia } from "../../components";
+import { CoursePrice } from "../../components";
 
 type Props = {
     form: UseFormReturn<FormValues>;
-    course: {
-        id: string;
+    course?: {
+        id?: string;
         imageUrl?: string | null;
+        price?: number | null;
+        isFree?: boolean | null;
     };
 };
-
-export default function SectionBasic({ form, course }: Props) {
-    const [price, setPrice] = useState(0);
-    const [isFree, setIsFree] = useState(false);
-
+export function SectionBasic({ form, course }: Props) {
     return (
         <TabsContent value="basic" className="space-y-6">
             <div className="grid gap-6 lg:grid-cols-3">
@@ -288,99 +284,20 @@ export default function SectionBasic({ form, course }: Props) {
                     </Card>
 
                     {/* Precio */}
-                    <div className="mx-auto">
-                        <Card className="border-border/50 bg-background-secondary backdrop-blur-sm">
-                            <CardHeader>
-                                <CardTitle className="flex items-center gap-2 text-foreground">
-                                    <DollarSign className="h-5 w-5 text-primary-text" />
-                                    Precio del Curso
-                                </CardTitle>
-                                <CardDescription>
-                                    Define el modelo de monetización
-                                </CardDescription>
-                            </CardHeader>
-                            <CardContent className="space-y-6">
-                                <div className="flex items-center justify-between p-4 rounded-xl bg-background-secondary border border-border/30">
-                                    <div className="flex items-center gap-3">
-                                        <div
-                                            className={`p-2 rounded-lg ${isFree ? "bg-emerald-500/10" : "bg-muted"}`}
-                                        >
-                                            <Star
-                                                className={`h-5 w-5 ${isFree ? "text-emerald-400" : "text-muted-foreground"}`}
-                                            />
-                                        </div>
-                                        <div>
-                                            <p className="font-medium text-foreground">
-                                                Curso Gratuito
-                                            </p>
-                                            <p className="text-sm text-muted-foreground">
-                                                Sin costo para los estudiantes
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <Switch
-                                        checked={isFree}
-                                        onCheckedChange={setIsFree}
-                                    />
-                                </div>
-
-                                {!isFree && (
-                                    <div className="space-y-4">
-                                        <Label className="text-sm font-medium text-foreground">
-                                            Precio (USD)
-                                        </Label>
-                                        <div className="relative">
-                                            <DollarSign className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                                            <Input
-                                                type="number"
-                                                value={price}
-                                                onChange={(e) =>
-                                                    setPrice(
-                                                        parseInt(
-                                                            e.target.value,
-                                                        ) || 0,
-                                                    )
-                                                }
-                                                className="pl-10 text-2xl font-bold h-14 border-border/10 bg-background-secondary"
-                                            />
-                                        </div>
-                                        <div className="flex gap-2">
-                                            {[300, 490, 7900, 9900, 14900].map(
-                                                (p) => (
-                                                    <Button
-                                                        key={p}
-                                                        variant={
-                                                            price === p
-                                                                ? "default"
-                                                                : "outline"
-                                                        }
-                                                        size="sm"
-                                                        onClick={() =>
-                                                            setPrice(p)
-                                                        }
-                                                        type="button"
-                                                        className={
-                                                            price === p
-                                                                ? "bg-primary"
-                                                                : ""
-                                                        }
-                                                    >
-                                                        ${p}
-                                                    </Button>
-                                                ),
-                                            )}
-                                        </div>
-                                    </div>
-                                )}
-                            </CardContent>
-                        </Card>
-                    </div>
+                    <CoursePrice
+                        courseId={course?.id}
+                        initialPrice={course?.price ?? 0}
+                        initialIsFree={course?.isFree ?? false}
+                        onPriceChange={(p) => form.setValue("price", p)}
+                    />
                 </div>
 
                 {/* Sidebar - Media */}
                 <CourseMedia
                     imageCourse={form.watch("imageUrl")}
-                    onImageChange={(url: string) => form.setValue("imageUrl", url)}
+                    onImageChange={(url: string) =>
+                        form.setValue("imageUrl", url)
+                    }
                 />
             </div>
         </TabsContent>

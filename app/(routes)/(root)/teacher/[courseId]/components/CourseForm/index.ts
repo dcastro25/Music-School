@@ -1,1 +1,1 @@
-export * from "./FormCourse"
+export { CourseForm } from "./CourseForm";

@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Form } from "@/components/ui/form";
-import { formSchema } from "./FormCourse.form";
+import { formSchema } from "./CourseForm.form";
 import {
     Card,
     CardContent,
@@ -40,15 +40,16 @@ import {
     Layers,
     Target,
 } from "lucide-react";
-import SectionBasic from "./SectionBasic";
-import Sectiondetails from "./SectionDetails";
-import { useModules } from "../../hooks/useModules";
+import { SectionBasic } from "./sections";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import axios from "axios";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { CourseChapter } from "./components";
+import { Chapter } from "@/app/generated/prisma/client";
 
 type FormValues = z.infer<typeof formSchema>;
 
@@ -61,16 +62,12 @@ type Props = {
 export function CourseForm({ course, onSuccess, onCourseCreated }: Props) {
     const router = useRouter();
     const [activeTab, setActiveTab] = useState("basic");
-    const {
-        addLesson,
-        addModule,
-        modules,
-        removeLesson,
-        removeModule,
-        setModules,
-    } = useModules();
+
     const [hasCertificate, setHasCertificate] = useState(true);
     const [isPublic, setIsPublic] = useState(true);
+    const [chapterList, setChapterList] = useState<Chapter[]>(
+        course?.chapters ?? [],
+    );
     const formProgress = 65;
 
     const form = useForm<FormValues>({
@@ -108,17 +105,30 @@ export function CourseForm({ course, onSuccess, onCourseCreated }: Props) {
                 // ✏️ EDITAR
                 await axios.patch(`/api/course/${course.id}`, values);
                 toast.success("Curso actualizado ✏️");
-                router.push("/teacher")
+                router.push("/teacher");
             } else {
                 // ➕ CREAR
                 const res = await axios.post("/api/course", values);
-                toast.success("Curso creado 🎉");
-
                 const createdCourse = res.data?.course ?? res.data;
+
+                // 👇 Vincular capítulos huérfanos
+                const orphanChapters = chapterList.filter((c) => c.isDraft);
+
+                await Promise.all(
+                    orphanChapters.map((chapter) =>
+                        axios.patch(`/api/course/${createdCourse.id}/chapter`, {
+                            // 👈 FIX
+                            chapterId: chapter.id,
+                            courseId: createdCourse.id,
+                        }),
+                    ),
+                );
 
                 if (onCourseCreated && createdCourse) {
                     onCourseCreated(createdCourse);
                 }
+
+                toast.success("Curso creado 🎉");
             }
 
             router.refresh();
@@ -130,7 +140,7 @@ export function CourseForm({ course, onSuccess, onCourseCreated }: Props) {
             );
         }
     };
-
+    
     const onError = (errors: any) => {
         console.log("Errores de validación:", errors);
     };
@@ -202,7 +212,7 @@ export function CourseForm({ course, onSuccess, onCourseCreated }: Props) {
                 </div>
             </header>
 
-            <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
+            <main className=" mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
                 <Form {...form}>
                     <form
                         id="course-form"
@@ -213,7 +223,7 @@ export function CourseForm({ course, onSuccess, onCourseCreated }: Props) {
                             onValueChange={setActiveTab}
                             className="space-y-8"
                         >
-                            <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 bg-muted/30 p-1 rounded-xl">
+                            <TabsList className="grid w-full grid-cols-2 sm:grid-cols-3 bg-muted/30 p-1 rounded-xl">
                                 <TabsTrigger
                                     value="basic"
                                     className="gap-2 data-[state=active]:bg-background data-[state=active]:shadow-sm"
@@ -232,15 +242,7 @@ export function CourseForm({ course, onSuccess, onCourseCreated }: Props) {
                                         Contenido
                                     </span>
                                 </TabsTrigger>
-                                <TabsTrigger
-                                    value="details"
-                                    className="gap-2 data-[state=active]:bg-card data-[state=active]:shadow-sm"
-                                >
-                                    <Target className="h-4 w-4" />
-                                    <span className="hidden sm:inline">
-                                        Detalles
-                                    </span>
-                                </TabsTrigger>
+
                                 <TabsTrigger
                                     value="settings"
                                     className="gap-2 data-[state=active]:bg-card data-[state=active]:shadow-sm"
@@ -253,11 +255,11 @@ export function CourseForm({ course, onSuccess, onCourseCreated }: Props) {
                             </TabsList>
 
                             {/* Tab: Básico */}
-                            <SectionBasic form={form} course={course}/>
+                            <SectionBasic form={form} course={course} />
 
                             {/* Tab: Contenido */}
                             <TabsContent value="content" className="space-y-6">
-                                <Card className="border-border/50 bg-card/50 backdrop-blur-sm">
+                                {/* <Card className="border-border/50 bg-card/50 backdrop-blur-sm">
                                     <CardHeader className="flex flex-row items-center justify-between">
                                         <div>
                                             <CardTitle className="flex items-center gap-2 text-foreground">
@@ -569,11 +571,14 @@ export function CourseForm({ course, onSuccess, onCourseCreated }: Props) {
                                             </div>
                                         )}
                                     </CardContent>
-                                </Card>
-                            </TabsContent>
+                                </Card> */}
 
-                            {/* Tab: Detalles */}
-                            <Sectiondetails />
+                                <CourseChapter
+                                    courseId={course?.id}
+                                    chapters={chapterList}
+                                    onChaptersChange={setChapterList}
+                                />
+                            </TabsContent>
 
                             {/* Tab: Ajustes */}
                             <TabsContent value="settings" className="space-y-6">
