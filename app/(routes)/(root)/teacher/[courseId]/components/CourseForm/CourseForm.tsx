@@ -24,21 +24,13 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import {
     BookOpen,
-    Plus,
-    Trash2,
-    GripVertical,
-    Clock,
-    Video,
-    FileText,
     Settings,
     Eye,
     Save,
     Send,
-    CheckCircle2,
     Globe,
     Award,
     Layers,
-    Target,
 } from "lucide-react";
 import { SectionBasic } from "./sections";
 
@@ -166,38 +158,6 @@ export function CourseForm({ course, onSuccess, onCourseCreated }: Props) {
                             </div>
                         </div>
                         <div className="flex items-center gap-3">
-                            <div className="hidden md:flex items-center gap-2 rounded-full bg-muted/50 px-4 py-2">
-                                <div className="text-sm text-muted-foreground">
-                                    Progreso:
-                                </div>
-                                <Progress
-                                    value={formProgress}
-                                    className="w-24 h-2"
-                                />
-                                <span className="text-sm font-medium text-primary">
-                                    {formProgress}%
-                                </span>
-                            </div>
-                            <Button
-                                variant="outline"
-                                size="sm"
-                                className="gap-2"
-                            >
-                                <Eye className="h-4 w-4" />
-                                <span className="hidden sm:inline">
-                                    Vista previa
-                                </span>
-                            </Button>
-                            <Button
-                                variant="outline"
-                                size="sm"
-                                className="gap-2"
-                            >
-                                <Save className="h-4 w-4" />
-                                <span className="hidden sm:inline">
-                                    Guardar borrador
-                                </span>
-                            </Button>
                             <Button
                                 type="submit"
                                 form="course-form"
@@ -223,7 +183,7 @@ export function CourseForm({ course, onSuccess, onCourseCreated }: Props) {
                             onValueChange={setActiveTab}
                             className="space-y-8"
                         >
-                            <TabsList className="grid w-full grid-cols-2 sm:grid-cols-3 bg-muted/30 p-1 rounded-xl">
+                            <TabsList className="grid w-full grid-cols-2 sm:grid-cols-2 bg-muted/30 p-1 rounded-xl">
                                 <TabsTrigger
                                     value="basic"
                                     className="gap-2 data-[state=active]:bg-background data-[state=active]:shadow-sm"
@@ -231,15 +191,6 @@ export function CourseForm({ course, onSuccess, onCourseCreated }: Props) {
                                     <BookOpen className="h-4 w-4" />
                                     <span className="hidden sm:inline">
                                         Básico
-                                    </span>
-                                </TabsTrigger>
-                                <TabsTrigger
-                                    value="content"
-                                    className="gap-2 data-[state=active]:bg-card data-[state=active]:shadow-sm"
-                                >
-                                    <Layers className="h-4 w-4" />
-                                    <span className="hidden sm:inline">
-                                        Contenido
                                     </span>
                                 </TabsTrigger>
 

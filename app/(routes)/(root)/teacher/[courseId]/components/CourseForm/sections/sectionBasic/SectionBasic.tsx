@@ -28,8 +28,10 @@ import {
 import { generateSlug } from "../../utiils";
 
 import { FormValues } from "../../CourseForm.form";
-import { CourseMedia } from "../../components";
+import { CourseChapter, CourseMedia } from "../../components";
 import { CoursePrice } from "../../components";
+import { useState } from "react";
+import { Chapter } from "@/app/generated/prisma/client"; // 👈
 
 type Props = {
     form: UseFormReturn<FormValues>;
@@ -38,9 +40,15 @@ type Props = {
         imageUrl?: string | null;
         price?: number | null;
         isFree?: boolean | null;
+        chapters?: Chapter[]; // 👈
     };
 };
+
 export function SectionBasic({ form, course }: Props) {
+    const [chapterList, setChapterList] = useState<Chapter[]>(
+        course?.chapters ?? [],
+    );
+
     return (
         <TabsContent value="basic" className="space-y-6">
             <div className="grid gap-6 lg:grid-cols-3">
@@ -129,7 +137,7 @@ export function SectionBasic({ form, course }: Props) {
                                         <FormControl>
                                             <Textarea
                                                 id="description"
-                                                placeholder="Describe detalladamente qué aprenderán los estudiantes, qué proyectos realizarán y por qué deberían tomar este curso..."
+                                                placeholder="Describe detalladamente qué aprenderán los estudiantes..."
                                                 className="min-h-40 bg-background-secondary"
                                                 {...field}
                                             />
@@ -145,7 +153,6 @@ export function SectionBasic({ form, course }: Props) {
 
                             {/* Categoría, Duración y Nivel */}
                             <div className="grid gap-6 sm:grid-cols-3">
-                                {/* Categoría */}
                                 <FormField
                                     control={form.control}
                                     name="category"
@@ -192,7 +199,6 @@ export function SectionBasic({ form, course }: Props) {
                                     )}
                                 />
 
-                                {/* Duración */}
                                 <FormField
                                     control={form.control}
                                     name="duration"
@@ -239,7 +245,6 @@ export function SectionBasic({ form, course }: Props) {
                                     )}
                                 />
 
-                                {/* Nivel */}
                                 <FormField
                                     control={form.control}
                                     name="level"
@@ -282,8 +287,16 @@ export function SectionBasic({ form, course }: Props) {
                             </div>
                         </CardContent>
                     </Card>
+                </div>
 
-                    {/* Precio */}
+                {/* Sidebar */}
+                <div className="flex flex-col gap-3">
+                    <CourseMedia
+                        imageCourse={form.watch("imageUrl")}
+                        onImageChange={(url: string) =>
+                            form.setValue("imageUrl", url)
+                        }
+                    />
                     <CoursePrice
                         courseId={course?.id}
                         initialPrice={course?.price ?? 0}
@@ -291,15 +304,13 @@ export function SectionBasic({ form, course }: Props) {
                         onPriceChange={(p) => form.setValue("price", p)}
                     />
                 </div>
-
-                {/* Sidebar - Media */}
-                <CourseMedia
-                    imageCourse={form.watch("imageUrl")}
-                    onImageChange={(url: string) =>
-                        form.setValue("imageUrl", url)
-                    }
-                />
+                {/* 👈 CourseChapter aquí dentro del col-span-2 */}
             </div>
+                <CourseChapter
+                    courseId={course?.id}
+                    chapters={chapterList}
+                    onChaptersChange={setChapterList}
+                />
         </TabsContent>
     );
 }

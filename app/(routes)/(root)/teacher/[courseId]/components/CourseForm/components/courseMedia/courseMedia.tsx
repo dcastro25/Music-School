@@ -136,69 +136,6 @@ export function CourseMedia(props: CourseImageProps) {
                 </div>
             </div>
 
-            {/* Card video */}
-            <div className="rounded-xl border border-border/50 bg-card overflow-hidden">
-                <div className="flex items-center gap-2 px-4 py-3 border-b border-border/30">
-                    <Video className="h-4 w-4 text-muted-foreground" />
-                    <span className="text-sm font-medium text-foreground">
-                        Video promocional
-                    </span>
-                    <span className="ml-auto text-xs text-muted-foreground">
-                        MP4, WebM · 100MB máx
-                    </span>
-                </div>
-                <div className="p-4">
-                    <div className="flex flex-col items-center justify-center gap-3 aspect-video border border-dashed border-border/30 rounded-xl bg-background cursor-pointer hover:border-border/50 transition-colors">
-                        <div className="flex items-center justify-center w-12 h-12 rounded-full bg-muted">
-                            <Video className="h-5 w-5 text-muted-foreground" />
-                        </div>
-                        <div className="text-center">
-                            <p className="text-sm font-medium text-foreground mb-1">
-                                Subir video
-                            </p>
-                            <p className="text-xs text-muted-foreground">
-                                Duración recomendada: 2-5 min
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            {/* Quick Stats */}
-            <div className="rounded-xl border border-border/50 bg-card p-4">
-                <p className="text-xs text-muted-foreground font-medium mb-3">
-                    Vista rápida
-                </p>
-                <div className="flex flex-col gap-3">
-                    {[
-                        { label: "Módulos", value: modules.length },
-                        {
-                            label: "Lecciones",
-                            value: modules.reduce(
-                                (a, m) => a + m.lessons.length,
-                                0,
-                            ),
-                        },
-                        {
-                            label: "Duración total",
-                            value: `${modules.reduce((a, m) => a + m.lessons.reduce((b, l) => b + l.duration, 0), 0)} min`,
-                        },
-                        { label: "Etiquetas", value: tags.length },
-                    ].map(({ label, value }) => (
-                        <div
-                            key={label}
-                            className="flex items-center justify-between"
-                        >
-                            <span className="text-sm text-muted-foreground">
-                                {label}
-                            </span>
-                            <span className="text-sm font-medium text-foreground">
-                                {value}
-                            </span>
-                        </div>
-                    ))}
-                </div>
-            </div>
         </div>
     );
 }

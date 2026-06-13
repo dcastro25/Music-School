@@ -1,16 +1,14 @@
-"use client";
-
-import { useState } from "react";
-import { ChapterVideoProps } from "./chapterVideo.types";
-import { Button } from "@/components/ui/button";
-import { Video, Loader2 } from "lucide-react";
-import { UploadButton } from "@uploadthing/react";
-import type { OurFileRouter } from "@/app/api/uploadthing/core";
-import { toast } from "sonner";
 import axios from "axios";
+import { useState } from "react";
+import { toast } from "sonner";
+import { ChapterVideoProps } from "./chapterVideo.types";
+import { Loader2, Video } from "lucide-react";
+import { UploadButton } from "@uploadthing/react";
+import { OurFileRouter } from "@/app/api/uploadthing/core";
+import { Button } from "@/components/ui/button";
 
 export function ChapterVideo(props: ChapterVideoProps) {
-    const { chapterId, courseId, videoUrl, onVideoChange } = props;
+    const { chapterId, courseId, videoUrl, onVideoChange, readOnly } = props;
 
     const [isEditing, setIsEditing] = useState(false);
     const [video, setVideo] = useState(videoUrl);
@@ -18,12 +16,12 @@ export function ChapterVideo(props: ChapterVideoProps) {
 
     const onSubmit = async (url: string) => {
         setVideo(url);
-
         if (chapterId && courseId) {
             try {
-                await axios.patch(`/api/course/${courseId}/chapter/${chapterId}`, {
-                    videoUrl: url,
-                });
+                await axios.patch(
+                    `/api/course/${courseId}/chapter/${chapterId}`,
+                    { videoUrl: url },
+                );
                 toast.success("Video actualizado correctamente");
             } catch {
                 toast.error("Error al guardar el video");
@@ -33,9 +31,40 @@ export function ChapterVideo(props: ChapterVideoProps) {
         }
     };
 
+    // Modo solo lectura
+    if (readOnly) {
+        return (
+            <div className="rounded-xl border border-border/50 bg-card overflow-hidden">
+                <div className="flex items-center gap-2 px-4 py-3 border-b border-border/30">
+                    <Video className="h-4 w-4 text-muted-foreground" />
+                    <span className="text-sm font-medium text-foreground">
+                        Video del capítulo
+                    </span>
+                </div>
+                {video ? (
+                    <video
+                        src={video}
+                        controls
+                        className="w-full"
+                        style={{ height: "250px", objectFit: "cover" }}
+                    />
+                ) : (
+                    <div
+                        className="flex items-center justify-center bg-muted/30"
+                        style={{ height: "60px" }}
+                    >
+                        <Video className="h-5 w-5 text-muted-foreground/40" />
+                        <span className="text-xs text-muted-foreground ml-2">
+                            Sin video
+                        </span>
+                    </div>
+                )}
+            </div>
+        );
+    }
+
     return (
         <div className="rounded-xl border border-border/50 bg-card overflow-hidden">
-            {/* Header */}
             <div className="flex items-center gap-2 px-4 py-3 border-b border-border/30">
                 <Video className="h-4 w-4 text-muted-foreground" />
                 <span className="text-sm font-medium text-foreground">
@@ -46,10 +75,10 @@ export function ChapterVideo(props: ChapterVideoProps) {
                 </span>
             </div>
 
-            {/* Contenido */}
             {!isEditing ? (
                 <div
-                    className="group relative aspect-video bg-background overflow-hidden cursor-pointer"
+                    className="group relative bg-background overflow-hidden cursor-pointer"
+                    style={{ height: video ? "100" : "100px" }}
                     onClick={() => setIsEditing(true)}
                 >
                     {video ? (
@@ -59,10 +88,9 @@ export function ChapterVideo(props: ChapterVideoProps) {
                         />
                     ) : (
                         <div className="w-full h-full flex items-center justify-center bg-muted/30">
-                            <Video className="h-12 w-12 text-muted-foreground/40" />
+                            <Video className="h-6 w-6 text-muted-foreground/40" />
                         </div>
                     )}
-
                     <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                         <button
                             type="button"
@@ -87,10 +115,14 @@ export function ChapterVideo(props: ChapterVideoProps) {
                         </div>
                         <div className="text-center">
                             <p className="text-sm font-medium text-foreground mb-1">
-                                {isUploading ? "Subiendo video..." : "Arrastra tu video aquí"}
+                                {isUploading
+                                    ? "Subiendo video..."
+                                    : "Arrastra tu video aquí"}
                             </p>
                             <p className="text-xs text-muted-foreground">
-                                {isUploading ? "Por favor espera" : "o selecciona un archivo"}
+                                {isUploading
+                                    ? "Por favor espera"
+                                    : "o selecciona un archivo"}
                             </p>
                         </div>
                         <span className="text-xs text-muted-foreground bg-muted px-3 py-1 rounded-full border border-border/30">
@@ -105,7 +137,9 @@ export function ChapterVideo(props: ChapterVideoProps) {
                             content={{
                                 button({ ready, isUploading: uploading }) {
                                     if (uploading) return "Subiendo...";
-                                    return ready ? "Seleccionar video" : "Cargando...";
+                                    return ready
+                                        ? "Seleccionar video"
+                                        : "Cargando...";
                                 },
                             }}
                             onUploadBegin={() => setIsUploading(true)}
@@ -140,7 +174,6 @@ export function ChapterVideo(props: ChapterVideoProps) {
                 </div>
             )}
 
-            {/* Footer */}
             <div className="flex items-center gap-2 px-4 py-2 border-t border-border/30">
                 {isUploading ? (
                     <Loader2 className="h-3 w-3 text-muted-foreground animate-spin" />
@@ -151,8 +184,8 @@ export function ChapterVideo(props: ChapterVideoProps) {
                     {isUploading
                         ? "Subiendo video..."
                         : video
-                        ? "Video guardado"
-                        : "Sin video — sube uno para este capítulo"}
+                          ? "Video guardado"
+                          : "Sin video — sube uno para este capítulo"}
                 </span>
             </div>
         </div>
