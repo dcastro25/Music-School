@@ -11,10 +11,10 @@ import { Button } from "@/components/ui/button";
 import { useModules } from "../../hooks/useModules";
 import { GripVertical, Layers, Plus } from "lucide-react";
 import { useState } from "react";
-import { FormChapter } from "./formChapter";
+import { ChapterVideo, FormChapter } from "./formChapter";
 import axios from "axios";
 import { toast } from "sonner";
-
+// 👈 ajusta el path
 
 import {
     DragDropContext,
@@ -25,13 +25,18 @@ import {
 
 import { CourseChapterProps, Chapter } from "./courseChapter.form";
 
-export function CourseChapter({ courseId, chapters, onChaptersChange }: CourseChapterProps) {
-
+export function CourseChapter({
+    courseId,
+    chapters,
+    onChaptersChange,
+}: CourseChapterProps) {
     const { addModule } = useModules();
     const [showInputChapter, setShowInputChapter] = useState(false);
+        const [createdChapter, setCreatedChapter] = useState<Chapter | null>(null);
 
     const handleChapterCreated = (newChapter: Chapter) => {
         onChaptersChange([...chapters, newChapter]);
+        setCreatedChapter(newChapter);
     };
 
     const onDragEnd = async (result: DropResult) => {
@@ -101,6 +106,14 @@ export function CourseChapter({ courseId, chapters, onChaptersChange }: CourseCh
                     />
                 )}
 
+                {createdChapter && (
+                    <ChapterVideo
+                        chapterId={createdChapter.id}
+                        courseId={courseId}
+                        videoUrl={createdChapter.videoUrl}
+                    />
+                )}
+
                 {chapters.length === 0 && (
                     <p className="text-sm text-muted-foreground">
                         Aún no hay capítulos creados
@@ -140,7 +153,8 @@ export function CourseChapter({ courseId, chapters, onChaptersChange }: CourseCh
                                                         <GripVertical className="h-4 w-4" />
                                                     </button>
                                                     <span>
-                                                        {index + 1}. {chapter.title}
+                                                        {index + 1}.{" "}
+                                                        {chapter.title}
                                                     </span>
                                                 </div>
                                             </div>

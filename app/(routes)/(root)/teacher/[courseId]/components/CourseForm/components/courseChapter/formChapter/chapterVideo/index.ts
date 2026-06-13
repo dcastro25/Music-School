@@ -1,3 +1,1 @@
-export {FormChapter} from "./formChapter"
-
 export {ChapterVideo} from "./chapterVideo"

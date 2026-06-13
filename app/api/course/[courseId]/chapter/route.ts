@@ -25,7 +25,7 @@ export async function POST(req: Request) {
     try {
         const body = await req.json();
 
-        const { title, courseId } = body;
+        const { title, courseId, description, videoUrl } = body;
 
         if (!title) {
             return new NextResponse("Title requerido", { status: 400 });
@@ -52,6 +52,8 @@ export async function POST(req: Request) {
         const chapter = await prisma.chapter.create({
             data: {
                 title,
+                description,
+                videoUrl: videoUrl ?? null,
                 courseId: courseId ?? null,
                 position,
                 isDraft: !courseId,

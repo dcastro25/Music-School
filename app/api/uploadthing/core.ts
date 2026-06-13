@@ -3,7 +3,7 @@ import { UploadThingError } from "uploadthing/server";
 
 const f = createUploadthing();
 
-const auth = (req: Request) => ({ id: "fakeId" }); 
+const auth = (req: Request) => ({ id: "fakeId" });
 export const ourFileRouter = {
     imageUploader: f({
         image: {
@@ -12,6 +12,11 @@ export const ourFileRouter = {
         },
     }).onUploadComplete(async ({ metadata }) => {
         return { uploadedBy: metadata };
+    }),
+    chapterVideo: f({
+        video: { maxFileCount: 1, maxFileSize: "512GB" },
+    }).onUploadComplete(({ file }) => {
+        return { url: file.url };
     }),
 } satisfies FileRouter;
 

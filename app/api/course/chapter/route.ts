@@ -5,7 +5,7 @@ import { NextResponse } from "next/server";
 export async function POST(req: Request) {
     try {
         const body = await req.json();
-        const { title } = body;
+        const { title, description, videoUrl } = body;
 
         if (!title) {
             return new NextResponse("Title requerido", { status: 400 });
@@ -14,10 +14,12 @@ export async function POST(req: Request) {
         const chapter = await prisma.chapter.create({
             data: {
                 title,
+                description,
                 courseId: null,
                 position: 0,
                 isDraft: true,
                 isPublished: false,
+                videoUrl: videoUrl ?? null,
             },
         });
 
