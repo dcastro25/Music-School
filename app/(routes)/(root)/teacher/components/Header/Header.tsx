@@ -34,7 +34,7 @@ export function HeaderTeacher({ onCourseCreated }: HeaderTeacherProps) {
                     <DialogHeader>
                         <DialogTitle>Crea tu curso</DialogTitle>
                     </DialogHeader>
- z                   <CourseForm
+                    <CourseForm
                         onSuccess={() => setOpen(false)}
                         onCourseCreated={onCourseCreated}
                     />

@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { Suspense, useCallback, useState } from "react";
 import { DataTable } from "./DataTable";
 import { HeaderTeacher } from "./components/Header/Header";
 import { Course } from "@/app/generated/prisma/client";
@@ -19,7 +19,10 @@ export function TeacherPageClient({ initialCourses }: TeacherPageClientProps) {
     return (
         <div>
             <HeaderTeacher onCourseCreated={handleCourseCreated} />
-            <DataTable DataTable={courses} />
+            <Suspense fallback={null}>
+                {" "}
+                <DataTable DataTable={courses} />
+            </Suspense>
         </div>
     );
 }
