@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { Suspense } from "react";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AppSidebar } from "./Components/AppSidebar";
@@ -20,7 +20,9 @@ export default function RootLayout({
 
                     {/* Main Content */}
                     <div className="flex flex-col flex-1 min-h-screen w-full">
-                        <Navbar />
+                         <Suspense fallback={null}>
+                            <Navbar />
+                        </Suspense>
                         <main className="flex-1 w-full">{children}</main>
                     </div>
                 </div>
