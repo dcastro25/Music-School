@@ -105,20 +105,6 @@ export function SectionBasic({ form, course }: Props) {
                                 )}
                             />
 
-                            {/* Subtítulo */}
-                            <div className="space-y-2">
-                                <Label
-                                    htmlFor="imageUrl"
-                                    className="text-sm font-medium text-foreground"
-                                >
-                                    Subtítulo
-                                </Label>
-                                <Input
-                                    id="imageUrl"
-                                    placeholder="Ej: Aprende desde cero con métodos prácticos y paso a paso"
-                                />
-                            </div>
-
                             {/* Descripción */}
                             <FormField
                                 control={form.control}

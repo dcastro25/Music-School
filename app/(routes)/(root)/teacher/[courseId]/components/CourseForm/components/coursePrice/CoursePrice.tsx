@@ -69,22 +69,7 @@ export function CoursePrice({
                     </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-6">
-                    {/* Switch gratuito */}
-                    <div className="flex items-center justify-between p-4 rounded-xl bg-background-secondary border border-border/30">
-                        <div className="flex items-center gap-3">
-                            <div className={`p-2 rounded-lg ${isFree ? "bg-emerald-500/10" : "bg-muted"}`}>
-                                <Star className={`h-5 w-5 ${isFree ? "text-emerald-400" : "text-muted-foreground"}`} />
-                            </div>
-                            <div>
-                                <p className="font-medium text-foreground">Curso Gratuito</p>
-                                <p className="text-sm text-muted-foreground">Sin costo para los estudiantes</p>
-                            </div>
-                        </div>
-                        <Switch
-                            checked={isFree}
-                            onCheckedChange={handleIsFreeChange}
-                        />
-                    </div>
+
 
                     {/* Input precio */}
                     {!isFree && (
