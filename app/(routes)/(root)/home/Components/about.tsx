@@ -21,7 +21,7 @@ const values = [
         icon: Target,
         title: "Metodologia Probada",
         description:
-            "Tecnicas de ensenanza desarrolladas durante mas de 15 anos para un aprendizaje efectivo.",
+            "Tecnicas de ensenanza desarrolladas durante mas de 15 años para un aprendizaje efectivo.",
     },
     {
         icon: Sparkles,
@@ -115,7 +115,7 @@ export function About() {
                                 15+
                             </span>
                             <div>
-                                <p className="font-semibold text-sm">Anos de</p>
+                                <p className="font-semibold text-sm">Años de</p>
                                 <p className="font-semibold text-sm">
                                     Experiencia
                                 </p>
@@ -142,7 +142,7 @@ export function About() {
                             </span>
                         </h2>
                         <p className="text-muted-foreground leading-relaxed mb-6 font-serif text-lg">
-                            La Escuela Vallenata Hector Ibanez nacio del sueno
+                            La Escuela Vallenata Hector Ibanez nacio del sueño
                             de preservar y difundir nuestra musica tradicional.
                             Fundada por el maestro Hector Ibanez, reconocido
                             acordeonero y compositor, nuestra escuela se ha
@@ -180,7 +180,7 @@ export function About() {
                         </div>
 
                         {/* Achievements */}
-                        <div className="bg-card p-6 rounded-2xl border border-border/50 shadow-sm">
+                        {/* <div className="bg-card p-6 rounded-2xl border border-border/50 shadow-sm">
                             <h3 className="font-semibold text-foreground mb-4 flex items-center gap-2">
                                 <span className="w-8 h-0.5 bg-primary rounded-full" />
                                 Nuestros Logros
@@ -198,7 +198,7 @@ export function About() {
                                     </li>
                                 ))}
                             </ul>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             </div>

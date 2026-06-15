@@ -196,7 +196,7 @@ function Sidebar({
                     data-sidebar="sidebar"
                     data-slot="sidebar"
                     data-mobile="true"
-                    className="w-(--sidebar-width) bg-sidebar p-0 text-sidebar-foreground [&>button]:hidden"
+                    className="w-[80vw] max-w-[280px] bg-sidebar p-0 text-sidebar-foreground [&>button]:hidden border-r border-ring/20 shadow-2xl transition-transform duration-300"
                     style={
                         {
                             "--sidebar-width": SIDEBAR_WIDTH_MOBILE,
