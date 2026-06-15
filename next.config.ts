@@ -5,7 +5,11 @@ const nextConfig: NextConfig = {
         remotePatterns: [
             {
                 protocol: "https",
-                hostname: "a704hq7mg4.ufs.sh",
+                hostname: "i.pinimg.com",
+            },
+            {
+                protocol: "https",
+                hostname: "artwork.art-cdn.com", // 👈
             },
         ],
     },
