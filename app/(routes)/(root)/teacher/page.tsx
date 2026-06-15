@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import { Header } from "@/app/(auth)/Components/header/Header";
+
 import { TeacherPageClient } from "./TeacherPageClient";
 
 export default async function TeacherPage() {
