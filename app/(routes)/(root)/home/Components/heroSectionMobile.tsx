@@ -61,7 +61,7 @@ export function HeroSectionMobile() {
     }
 
     return (
-        <section className="mx-auto flex flex-col gap-6 bg-background px-4 pt-8 pb-8">
+        <section className="mx-auto flex flex-col gap-6 bg-background px-4 pt-8 pb-15 md:hidden">
             {/* Top bar */}
             <header className="flex items-center justify-between">
                 <div className="flex flex-col gap-1">
