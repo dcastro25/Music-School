@@ -35,7 +35,7 @@ export function HeroSection() {
     return (
         <section
             id="inicio"
-            className="relative w-full bg-[#0a0700] min-h-[calc(100vh-80px)] flex flex-col mt-4"
+            className="relative w-full bg-[#0a0700] min-h-[calc(100vh-80px)] flex-col mt-4 hidden sm:hidden;"
         >
             {/* Brillo decorativo fondo */}
             <div className="absolute pointer-events-none top-[20%] left-[30%] w-[500px] h-[500px] rounded-full bg-[radial-gradient(circle,_#b8860b0a_0%,_transparent_70%)]" />
