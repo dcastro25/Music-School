@@ -88,16 +88,6 @@ export function HeroSectionMobile() {
                 </p>
             </div>
 
-            {/* Section heading */}
-            <div className="flex items-center justify-between text-white/80">
-                <h2 className="text-lg text-balance">
-                    DestacadoParaTi
-                </h2>
-                <button className="text-sm text-muted-foreground">
-                    <p>Ver Mas</p>
-                </button>
-            </div>
-
             {/* Mobile swipeable carousel */}
             <div
                 ref={scrollerRef}
@@ -142,7 +132,7 @@ export function HeroSectionMobile() {
                                 <span className="text-xs text-primary-text">
                                     {slide.note}
                                 </span>
-                                <button className="rounded-xl bg-white/60 px-3 py-1.5 mb-1 text-sm font-semibold text-black">
+                                <button className="rounded-xl bg-white/40 px-3 py-1.5 mb-1 text-sm font-semibold text-black">
                                     Mas Informacion
                                 </button>
                             </div>
