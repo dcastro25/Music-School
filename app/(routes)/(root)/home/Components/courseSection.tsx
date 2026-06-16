@@ -158,8 +158,8 @@ export function CoursesSection() {
                         </span>
                     </div>
                     <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-5 text-balance leading-tight">
-                        Descubre Tu Camino en la{" "}
-                        <span className="text-primary">Musica Vallenata</span>
+                        Descubre Tu Camino {" "}
+                        <span className="text-white/70"> en la Musica Vallenata</span>
                     </h2>
                     <p className="text-muted-foreground font-serif text-lg leading-relaxed">
                         Ofrecemos una variedad de cursos disenados para todos

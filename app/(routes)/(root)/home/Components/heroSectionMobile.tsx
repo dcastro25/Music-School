@@ -10,6 +10,7 @@ import {
     Drum,
     Mic,
     Music2,
+    MapPin,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -61,25 +62,26 @@ export function HeroSectionMobile() {
     }
 
     return (
-        <section className="mx-auto flex flex-col gap-6 bg-background px-4 pt-8 pb-15 md:hidden">
+        <section className="mx-auto flex flex-col gap-3 bg-background px-4 pt-5 pb-15 md:hidden">
             {/* Top bar */}
-            <header className="flex items-center justify-between">
-                <div className="flex flex-col gap-1">
-                    <span className="text-xs text-muted-foreground">
-                        Ubicación
-                    </span>
-                    <button className="flex items-center gap-1 text-base font-semibold text-foreground">
-                        Monteria / Lorica, Col
-                        <ChevronDown className="size-4 text-primary" />
-                    </button>
-                </div>
+            <header className="flex items-center text-xs gap-1">
+                <MapPin className="w-4 h-4" />
+                <span
+                    className=" text-primary-text
+                    "
+                >
+                    Monteria / Lorica, Col
+                </span>
             </header>
 
             {/* Hero copy */}
-            <div className="flex flex-col gap-2">
-                <h1 className="text-3xl font-extrabold leading-tight text-foreground ">
-                    Domina tu instrumento favorito
-                </h1>
+            <div className="flex flex-col gap-3">
+                <div>
+                    <span className="text-white/80 text-4xl">Domina tu</span>
+                    <h1 className="text-4xl leading-tight text-foreground ">
+                        instrumento favorito
+                    </h1>
+                </div>
                 <p className="text-sm leading-relaxed text-muted-foreground ">
                     Cursos online de música guiados por profesores expertos, a
                     tu ritmo y desde cualquier lugar.
@@ -87,12 +89,12 @@ export function HeroSectionMobile() {
             </div>
 
             {/* Section heading */}
-            <div className="flex items-center justify-between">
-                <h2 className="text-lg font-bold text-foreground text-balance">
-                    #DestacadoParaTi
+            <div className="flex items-center justify-between text-white/80">
+                <h2 className="text-lg text-balance">
+                    DestacadoParaTi
                 </h2>
                 <button className="text-sm text-muted-foreground">
-                    Ver todo
+                    <p>Ver Mas</p>
                 </button>
             </div>
 
@@ -114,34 +116,34 @@ export function HeroSectionMobile() {
                             sizes="(max-width: 768px) 100vw, 28rem"
                             className="object-cover"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-r from-black via-black/85 to-black/20" />
-                        <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/30" />
+                        <div className="absolute inset-0 bg-linear-to-r from-black via-black/75 to-black/5" />
+                        <div className="absolute inset-0 bg-linear-to-b from-black/15 via-transparent to-black/10" />
 
                         {/* Contenido */}
                         <div className="relative flex flex-col gap-3 px-1.5">
-                            <span className="w-fit rounded-full bg-white/10 px-3 py-1 text-xs font-medium text-white/80">
+                            <span className="w-fit rounded-full  px-3 py-1 text-xs font-medium text-white/70 p-2 bg-white/10 mt-2">
                                 {slide.tag}
                             </span>
-                            <h3 className="text-xl font-bold text-foreground text-balance">
+                            <h3 className="text-xl font-bold text-white/80 text-balance">
                                 {slide.title}
                             </h3>
                             <div className="flex items-end gap-1">
-                                <span className="text-md text-white/60">
+                                <span className="text-md text-primary-text">
                                     {slide.upTo}
                                 </span>
-                                <span className="text-4xl font-extrabold leading-none text-white">
+                                <span className="text-4xl font-extrabold leading-none text-foreground">
                                     {slide.amount}
                                 </span>
-                                <span className="mb-1 text-xl font-bold text-white">
+                                <span className="mb-1 text-xl font-bold text-fore">
                                     %
                                 </span>
                             </div>
                             <div className="flex items-center justify-between">
-                                <span className="text-xs text-white/50">
+                                <span className="text-xs text-primary-text">
                                     {slide.note}
                                 </span>
-                                <button className="rounded-full bg-white px-5 py-2 text-sm font-semibold text-black">
-                                    Mas
+                                <button className="rounded-xl bg-white/60 px-3 py-1.5 mb-1 text-sm font-semibold text-black">
+                                    Mas Informacion
                                 </button>
                             </div>
                         </div>
@@ -168,10 +170,10 @@ export function HeroSectionMobile() {
             {/* Categories */}
             <div className="flex flex-col gap-4">
                 <div className="flex items-center justify-between">
-                    <h2 className="text-lg font-bold text-foreground">
+                    <h2 className="text-lg font-bold text-white/70">
                         Categorías
                     </h2>
-                    <Button variant="default" className="h-9 px-4 text-sm">
+                    <Button variant="outline" className="h-8 px-4 text-sm text-foreground/60 border-foreground/60">
                         Ver todo
                     </Button>
                 </div>
@@ -181,7 +183,7 @@ export function HeroSectionMobile() {
                             key={label}
                             className="group flex flex-col items-center gap-2 rounded-3xl bg-card px-2 py-3 text-center transition hover:bg-primary/5"
                         >
-                            <span className="grid h-11 w-11 place-items-center rounded-2xl bg-background text-primary transition group-hover:bg-primary/10">
+                            <span className="grid h-11 w-11 place-items-center rounded-2xl bg-background text-primary-text transition group-hover:bg-primary/10">
                                 <Icon className="h-5 w-5" />
                             </span>
                             <span className="text-[11px] font-medium text-muted-foreground">

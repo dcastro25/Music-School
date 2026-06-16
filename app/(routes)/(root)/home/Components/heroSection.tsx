@@ -70,7 +70,7 @@ export function HeroSection() {
                         </div>
 
                         {/* Título */}
-                        <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold leading-tight mb-6 text-white">
+                        <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold leading-tight mb-6 text-white/80">
                             Aprende el Arte del{" "}
                             <span className="relative inline-block text-primary">
                                 Vallenato
@@ -99,14 +99,14 @@ export function HeroSection() {
                         </p>
 
                         {/* Botones */}
-                        <div className="flex  justify-center flex-wrap gap-4">
-                            <Button size="lg" variant="default">
+                        <div className="flex  justify-center flex-wrap gap-10">
+                            <Button size="lg" variant="default" className="px-5 py-5  ">
                                 Comenzar Mi Viaje Musical
                             </Button>
                             <Button
                                 size="lg"
                                 variant="outline"
-                                className="px-8 py-6 "
+                                className="px-8 py-5 "
                             >
                                 <Play className="h-4 w-4 mr-2" />
                                 Ver Presentacion

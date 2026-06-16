@@ -115,8 +115,8 @@ export function About() {
                                 15+
                             </span>
                             <div>
-                                <p className="font-semibold text-sm">Años de</p>
-                                <p className="font-semibold text-sm">
+                                <p className="font-semibold text-sm text-white/70">Años de</p>
+                                <p className="font-semibold text-sm text-white/70">
                                     Experiencia
                                 </p>
                             </div>
@@ -135,13 +135,13 @@ export function About() {
                         <span className="text-primary font-semibold uppercase tracking-[0.2em] text-sm">
                             Sobre Nosotros
                         </span>
-                        <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mt-3 mb-6 text-balance leading-tight">
-                            Mas de 15 Anos Formando{" "}
-                            <span className="text-primary">
+                        <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white/70 mt-3 mb-6 text-balance leading-tight">
+                            Mas de <span className="text-foreground">15 Años</span> Formando{" "}
+                            <span>
                                 Artistas del Vallenato
                             </span>
                         </h2>
-                        <p className="text-muted-foreground leading-relaxed mb-6 font-serif text-lg">
+                        <p className="text-primary-text leading-relaxed mb-6 font-serif text-lg">
                             La Escuela Vallenata Hector Ibanez nacio del sueño
                             de preservar y difundir nuestra musica tradicional.
                             Fundada por el maestro Hector Ibanez, reconocido
