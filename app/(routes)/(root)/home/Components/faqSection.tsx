@@ -21,7 +21,7 @@ const faqs = [
     },
     {
         question: "Ofrecen clases online?",
-        answer: "Si! Ofrecemos clases tanto presenciales en Valledupar como clases online en vivo a traves de videollamada. Nuestros estudiantes internacionales pueden disfrutar de la misma calidad de ensenanza desde cualquier lugar del mundo.",
+        answer: "Si! Ofrecemos clases tanto presenciales en Monteria como clases online en vivo a traves de videollamada . Nuestros estudiantes internacionales pueden disfrutar de la misma calidad de ensenanza desde cualquier lugar del mundo.",
     },
     {
         question: "Cuanto tiempo toma aprender a tocar un instrumento?",
@@ -29,7 +29,7 @@ const faqs = [
     },
     {
         question: "Que edades aceptan?",
-        answer: "Aceptamos estudiantes desde los 8 anos en adelante. No hay limite de edad maximo. Tenemos estudiantes desde ninos hasta adultos mayores que disfrutan aprendiendo musica vallenata. Nunca es tarde para comenzar.",
+        answer: "Aceptamos estudiantes desde los 8 años en adelante. No hay limite de edad maximo. Tenemos estudiantes desde niños hasta adultos mayores que disfrutan aprendiendo musica vallenata. Nunca es tarde para comenzar.",
     },
     {
         question: "Hay presentaciones o recitales para los estudiantes?",

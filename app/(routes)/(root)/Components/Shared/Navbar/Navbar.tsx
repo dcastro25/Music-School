@@ -5,19 +5,64 @@ import { Input } from "@/components/ui/input";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { useSearch } from "@/hooks/useSearch";
 import { BellRing, Search, X } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import { useNavbarUI } from "./useNavbar";
+
+function useHideOnScroll(threshold = 8) {
+    const [hidden, setHidden] = useState(false);
+    const lastY = useRef(0);
+
+    useEffect(() => {
+        const onScroll = () => {
+            const y = window.scrollY;
+            const diff = y - lastY.current;
+            if (Math.abs(diff) < threshold) return;
+            setHidden(diff > 0 && y > 60);
+            lastY.current = y;
+        };
+        window.addEventListener("scroll", onScroll, { passive: true });
+        return () => window.removeEventListener("scroll", onScroll);
+    }, [threshold]);
+
+    return hidden;
+}
+
+function useIsMobile() {
+    const [isMobile, setIsMobile] = useState(false);
+    useEffect(() => {
+        const mq = window.matchMedia("(hover: none) and (pointer: coarse)");
+        setIsMobile(mq.matches);
+        const h = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+        mq.addEventListener("change", h);
+        return () => mq.removeEventListener("change", h);
+    }, []);
+    return isMobile;
+}
 
 export function Navbar() {
     const { isAtTop, openSearch, setOpenSearch } = useNavbarUI();
     const { setValue, value, clearSearch } = useSearch();
+    const isMobile = useIsMobile();
+    const hidden = useHideOnScroll(8);
+
+    // Solo ocultar en móvil real al hacer scroll abajo
+    const shouldHide = isMobile && hidden;
 
     return (
-        <div className="sticky z-40 w-full top-0 border-b border-ring/30 bg-bgPrimary flex flex-col transition-[width,margin] duration-200 ease-linear">
-            {/* Barra informativa */}
+        <div
+            className="sticky top-0 z-40 w-full border-b border-ring/30 bg-bgPrimary flex flex-col transition-[width,margin] duration-200 ease-linear"
+            style={{
+                transform: shouldHide ? "translateY(-110%)" : "translateY(0)",
+                transition: "transform 300ms ease-in-out",
+            }}
+        >
+            {/* ── Barra informativa: solo desktop ── */}
             <div
-                className={`hidden md:grid transition-all duration-200 ease-linear ${
-                    isAtTop ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
-                }`}
+                className={`
+                    hidden [@media(min-width:768px)_and_(hover:hover)]:grid
+                    transition-all duration-200 ease-linear
+                    ${isAtTop ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}
+                `}
             >
                 <div className="overflow-hidden">
                     <div className="bg-background-secondary border-b border-border/30 text-bgSecondary text-sm pl-10 pr-10 h-10 flex justify-between items-center">
@@ -31,14 +76,15 @@ export function Navbar() {
                 </div>
             </div>
 
-            {/* Navbar móvil */}
-            <div className="flex md:hidden items-center justify-between px-4 py-3">
+            {/* ── MÓVIL: sticky, fondo sólido, se oculta al bajar ── */}
+            <div className="flex [@media(min-width:768px)_and_(hover:hover)]:hidden items-center justify-between px-4 py-3 bg-background">
                 <div className="flex items-center gap-3">
                     <SidebarTrigger />
                     <div className="flex items-center gap-2">
                         <img
                             src="/img/logo.jpg"
                             className="h-9 w-9 rounded-xl object-cover"
+                            alt="Logo Hector Ibañez"
                         />
                         <div className="leading-tight">
                             <h1 className="text-sm font-semibold text-textPrimary">
@@ -55,23 +101,30 @@ export function Navbar() {
                     <button
                         onClick={() => setOpenSearch(!openSearch)}
                         className="p-2 rounded-lg hover:bg-white/5 transition"
+                        aria-label="Abrir buscador"
                     >
                         <Search className="size-5 text-textSecondary" />
                     </button>
-                    <Button variant="outline" className="h-9 w-9 p-0">
+                    <Button
+                        variant="outline"
+                        className="h-9 w-9 p-0"
+                        aria-label="Notificaciones"
+                    >
                         <BellRing className="size-4" />
                     </Button>
                 </div>
             </div>
 
-            {/* Buscador móvil expandible */}
+            {/* ── Buscador móvil expandible ── */}
             <div
-                className={`md:hidden grid transition-all duration-200 ease-linear ${
-                    openSearch ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
-                }`}
+                className={`
+                    [@media(min-width:768px)_and_(hover:hover)]:hidden grid
+                    transition-all duration-200 ease-linear
+                    ${openSearch ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}
+                `}
             >
                 <div className="overflow-hidden">
-                    <div className="px-4 pb-3">
+                    <div className="px-4 pb-3 bg-background">
                         <div className="relative">
                             <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
                             <Input
@@ -85,6 +138,7 @@ export function Navbar() {
                                     type="button"
                                     onClick={clearSearch}
                                     className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                                    aria-label="Limpiar búsqueda"
                                 >
                                     <X className="size-4" />
                                 </button>
@@ -94,14 +148,15 @@ export function Navbar() {
                 </div>
             </div>
 
-            {/* Navbar desktop */}
-            <div className="hidden md:flex flex-row justify-between items-center bg-background/85 pr-26 pl-10 py-5">
+            {/* ── DESKTOP: sticky normal, sin hide-on-scroll ── */}
+            <div className="hidden [@media(min-width:768px)_and_(hover:hover)]:flex flex-row justify-between items-center bg-background/85 pr-26 pl-10 py-5">
                 <div className="flex flex-row justify-between items-center gap-4">
                     <SidebarTrigger />
                     <div className="max-w-6xl flex flex-row gap-4">
                         <img
                             src="/img/logo.jpg"
                             className="h-14 w-auto rounded-2xl"
+                            alt="Logo Hector Ibañez"
                         />
                         <div>
                             <h1 className="text-textPrimary font-bold text-xl">
@@ -129,12 +184,13 @@ export function Navbar() {
                                 type="button"
                                 onClick={clearSearch}
                                 className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                                aria-label="Limpiar búsqueda"
                             >
                                 <X className="size-4" />
                             </button>
                         )}
                     </div>
-                    <Button variant="outline">
+                    <Button variant="outline" aria-label="Notificaciones">
                         <BellRing />
                     </Button>
                 </div>

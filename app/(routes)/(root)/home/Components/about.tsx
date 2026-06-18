@@ -21,7 +21,7 @@ const values = [
         icon: Target,
         title: "Metodologia Probada",
         description:
-            "Tecnicas de ensenanza desarrolladas durante mas de 15 años para un aprendizaje efectivo.",
+            "Tecnicas de enseñanza desarrolladas durante mas de 15 años para un aprendizaje efectivo.",
     },
     {
         icon: Sparkles,
@@ -142,9 +142,9 @@ export function About() {
                             </span>
                         </h2>
                         <p className="text-primary-text leading-relaxed mb-6 font-serif text-lg">
-                            La Escuela Vallenata Hector Ibanez nacio del sueño
+                            La Escuela Vallenata Hector Ibañez nacio del sueño
                             de preservar y difundir nuestra musica tradicional.
-                            Fundada por el maestro Hector Ibanez, reconocido
+                            Fundada por el maestro Hector Ibañez, reconocido
                             acordeonero y compositor, nuestra escuela se ha
                             convertido en un referente de la ensenanza musical
                             en el Caribe colombiano.
