@@ -16,10 +16,13 @@ function useHideOnScroll(threshold = 8) {
         const onScroll = () => {
             const y = window.scrollY;
             const diff = y - lastY.current;
+
             if (Math.abs(diff) < threshold) return;
+
             setHidden(diff > 0 && y > 60);
             lastY.current = y;
         };
+
         window.addEventListener("scroll", onScroll, { passive: true });
         return () => window.removeEventListener("scroll", onScroll);
     }, [threshold]);
@@ -29,43 +32,48 @@ function useHideOnScroll(threshold = 8) {
 
 function useIsMobile() {
     const [isMobile, setIsMobile] = useState(false);
+
     useEffect(() => {
         const mq = window.matchMedia("(hover: none) and (pointer: coarse)");
         setIsMobile(mq.matches);
-        const h = (e: MediaQueryListEvent) => setIsMobile(e.matches);
-        mq.addEventListener("change", h);
-        return () => mq.removeEventListener("change", h);
+
+        const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+        mq.addEventListener("change", handler);
+
+        return () => mq.removeEventListener("change", handler);
     }, []);
+
     return isMobile;
 }
 
 export function Navbar() {
     const { isAtTop, openSearch, setOpenSearch } = useNavbarUI();
     const { setValue, value, clearSearch } = useSearch();
+
     const isMobile = useIsMobile();
     const hidden = useHideOnScroll(8);
 
-    // Solo ocultar en móvil real al hacer scroll abajo
     const shouldHide = isMobile && hidden;
 
     return (
         <div
-            className="sticky top-0 z-40 w-full border-b border-ring/30 bg-bgPrimary flex flex-col transition-[width,margin] duration-200 ease-linear"
-            style={{
-                transform: shouldHide ? "translateY(-110%)" : "translateY(0)",
-                transition: "transform 300ms ease-in-out",
-            }}
+            className={`
+                sticky z-50 w-full border-b border-ring/30
+                bg-[#0f0b05] md:bg-background/85
+                flex flex-col transition-all duration-300
+                ${shouldHide ? "-top-24" : "top-0"}
+            `}
         >
-            {/* ── Barra informativa: solo desktop ── */}
+            {/* ───────── BARRA INFO (DESKTOP) ───────── */}
             <div
                 className={`
                     hidden [@media(min-width:768px)_and_(hover:hover)]:grid
-                    transition-all duration-200 ease-linear
+                    transition-all duration-200
                     ${isAtTop ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}
                 `}
             >
                 <div className="overflow-hidden">
-                    <div className="bg-background-secondary border-b border-border/30 text-bgSecondary text-sm pl-10 pr-10 h-10 flex justify-between items-center">
+                    <div className="bg-background-secondary border-b border-border/30 text-bgSecondary text-sm px-10 h-10 flex justify-between items-center">
                         <div className="flex gap-6">
                             <a href="#">Gmail@gmail.com</a>
                             <a href="#">322 332 2352</a>
@@ -76,21 +84,21 @@ export function Navbar() {
                 </div>
             </div>
 
-            {/* ── MÓVIL: sticky, fondo sólido, se oculta al bajar ── */}
-            <div className="flex [@media(min-width:768px)_and_(hover:hover)]:hidden items-center justify-between px-4 py-3 bg-background">
+            {/* ───────── NAVBAR MÓVIL ───────── */}
+            <div className="flex [@media(min-width:768px)_and_(hover:hover)]:hidden items-center justify-between px-4 py-3 bg-[#0f0b05]">
                 <div className="flex items-center gap-3">
                     <SidebarTrigger />
                     <div className="flex items-center gap-2">
                         <img
                             src="/img/logo.jpg"
-                            className="h-9 w-9 rounded-xl object-cover"
+                            className="h-9 w-9 rounded-xl object-cover transform-gpu"
                             alt="Logo Hector Ibañez"
                         />
                         <div className="leading-tight">
-                            <h1 className="text-sm font-semibold text-textPrimary">
+                            <h1 className="text-sm font-semibold text-[#f5e9c9]">
                                 Hector Ibañez
                             </h1>
-                            <p className="text-[11px] text-textSecondary">
+                            <p className="text-[11px] text-white/60">
                                 Escuela vallenata
                             </p>
                         </div>
@@ -101,44 +109,37 @@ export function Navbar() {
                     <button
                         onClick={() => setOpenSearch(!openSearch)}
                         className="p-2 rounded-lg hover:bg-white/5 transition"
-                        aria-label="Abrir buscador"
                     >
-                        <Search className="size-5 text-textSecondary" />
+                        <Search className="size-5 text-white/60" />
                     </button>
-                    <Button
-                        variant="outline"
-                        className="h-9 w-9 p-0"
-                        aria-label="Notificaciones"
-                    >
+                    <Button variant="outline" className="h-9 w-9 p-0">
                         <BellRing className="size-4" />
                     </Button>
                 </div>
             </div>
 
-            {/* ── Buscador móvil expandible ── */}
+            {/* ───────── BUSCADOR MÓVIL ───────── */}
             <div
                 className={`
                     [@media(min-width:768px)_and_(hover:hover)]:hidden grid
-                    transition-all duration-200 ease-linear
+                    transition-all duration-200
                     ${openSearch ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}
                 `}
             >
                 <div className="overflow-hidden">
-                    <div className="px-4 pb-3 bg-background">
+                    <div className="px-4 pb-3 bg-[#0f0b05]">
                         <div className="relative">
-                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
+                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-white/40" />
                             <Input
                                 placeholder="Buscar..."
-                                className="pl-9 pr-9 bg-white/5 border-white/10 focus-visible:ring-0"
+                                className="pl-9 pr-9 bg-white/5 border-white/10"
                                 value={value}
                                 onChange={(e) => setValue(e.target.value)}
                             />
                             {value && (
                                 <button
-                                    type="button"
                                     onClick={clearSearch}
-                                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-                                    aria-label="Limpiar búsqueda"
+                                    className="absolute right-3 top-1/2 -translate-y-1/2 text-white/40"
                                 >
                                     <X className="size-4" />
                                 </button>
@@ -148,21 +149,21 @@ export function Navbar() {
                 </div>
             </div>
 
-            {/* ── DESKTOP: sticky normal, sin hide-on-scroll ── */}
-            <div className="hidden [@media(min-width:768px)_and_(hover:hover)]:flex flex-row justify-between items-center bg-background/85 pr-26 pl-10 py-5">
-                <div className="flex flex-row justify-between items-center gap-4">
+            {/* ───────── NAVBAR DESKTOP ───────── */}
+            <div className="hidden [@media(min-width:768px)_and_(hover:hover)]:flex justify-between items-center px-10 py-5 bg-background/85">
+                <div className="flex items-center gap-4">
                     <SidebarTrigger />
-                    <div className="max-w-6xl flex flex-row gap-4">
+                    <div className="flex gap-4 items-center">
                         <img
                             src="/img/logo.jpg"
-                            className="h-14 w-auto rounded-2xl"
-                            alt="Logo Hector Ibañez"
+                            className="h-14 rounded-2xl transform-gpu"
+                            alt="Logo"
                         />
                         <div>
-                            <h1 className="text-textPrimary font-bold text-xl">
+                            <h1 className="text-[#f5e9c9] font-bold text-xl">
                                 Hector Ibañez
                             </h1>
-                            <p className="text-textSecondary">
+                            <p className="text-white/60">
                                 Escuela vallenata
                             </p>
                         </div>
@@ -171,26 +172,24 @@ export function Navbar() {
 
                 <div className="flex gap-4 items-center">
                     <div className="relative w-full max-w-sm">
-                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground pointer-events-none" />
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-white/40" />
                         <Input
-                            type="text"
                             placeholder="Buscar..."
                             value={value}
                             onChange={(e) => setValue(e.target.value)}
-                            className="pl-9 pr-9 border-0 bg-transparent focus-visible:border-none text-primary-text placeholder:text-muted-foreground"
+                            className="pl-9 pr-9 bg-transparent border-0 text-[#f5e9c9]"
                         />
                         {value && (
                             <button
-                                type="button"
                                 onClick={clearSearch}
-                                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-                                aria-label="Limpiar búsqueda"
+                                className="absolute right-3 top-1/2 -translate-y-1/2 text-white/40"
                             >
                                 <X className="size-4" />
                             </button>
                         )}
                     </div>
-                    <Button variant="outline" aria-label="Notificaciones">
+
+                    <Button variant="outline">
                         <BellRing />
                     </Button>
                 </div>
