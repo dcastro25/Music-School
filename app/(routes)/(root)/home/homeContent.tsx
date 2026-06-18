@@ -1,14 +1,28 @@
-import React from 'react'
-import { About, CoursesSection, HeroSection, HeroSectionMobile} from './Components'
+import React from "react";
+import {
+    About,
+    CoursesSection,
 
+    CtaBanner,
+
+    FaqSection,
+
+    HeroSection,
+    HeroSectionMobile,
+    InstrumentsSection,
+} from "./Components";
 
 export function HomeContent() {
-  return (
-    <div>
-    <HeroSectionMobile/>
-      <HeroSection/>
-      <About/>
-      <CoursesSection/>
-    </div>
-  )
+    return (
+        <div>
+            <HeroSectionMobile />
+            <HeroSection />
+            <About />
+            <CoursesSection />
+            <InstrumentsSection />
+            <FaqSection/>
+            <CtaBanner/>
+
+        </div>
+    );
 }
