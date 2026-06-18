@@ -64,7 +64,11 @@ export function About() {
                     {/* Image Side */}
                     <div
                         ref={imagesRef}
-                        className={`relative order-2 lg:order-1 transition-all duration-1000 ${
+                        // FIX: transition-all -> transition-[opacity,transform].
+                        // transition-all obliga al navegador a vigilar TODAS las propiedades CSS
+                        // en cada frame; al animar esto durante scroll activo en Android, sobrecarga
+                        // el compositor y produce el glitch tipo "estática".
+                        className={`relative order-2 lg:order-1 transition-[opacity,transform] duration-1000 will-change-transform ${
                             imagesVisible
                                 ? "opacity-100 translate-x-0"
                                 : "opacity-0 -translate-x-12"
@@ -110,7 +114,13 @@ export function About() {
                         </div>
 
                         {/* Experience badge */}
-                        <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 bg-primary/10 border border-primary/20 text-foreground px-4 py-2 rounded-2xl shadow-2xl z-20 flex items-center gap-4 backdrop-blur-sm">
+                        {/* FIX: se quitó backdrop-blur-sm. backdrop-filter + un ancestro que se está
+                            trasladando (translate-x) al mismo tiempo es una combinación muy propensa
+                            a corromper frames en Chrome/Android (Skia tiene que re-samplear el fondo
+                            en cada frame mientras todo se mueve). Se reemplaza por un fondo sólido
+                            semitransparente (bg-card/95), que da un efecto visual similar sin el
+                            costo de muestreo en tiempo real. */}
+                        <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 bg-card/95 border border-primary/20 text-foreground px-4 py-2 rounded-2xl shadow-2xl z-20 flex items-center gap-4">
                             <span className="text-2xl font-bold text-primary">
                                 15+
                             </span>
@@ -126,7 +136,8 @@ export function About() {
                     {/* Content Side */}
                     <div
                         ref={contentRef}
-                        className={`order-1 lg:order-2 transition-all duration-1000 delay-200 ${
+                        // FIX: misma razón que arriba — transition-all -> propiedades específicas.
+                        className={`order-1 lg:order-2 transition-[opacity,transform] duration-1000 delay-200 will-change-transform ${
                             contentVisible
                                 ? "opacity-100 translate-x-0"
                                 : "opacity-0 translate-x-12"
