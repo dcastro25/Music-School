@@ -14,16 +14,18 @@ export default function RootLayout({
     return (
         <TooltipProvider>
             <SidebarProvider>
-                <div className="flex min-h-screen w-full">
+                <div className="flex min-h-screen w-full overflow-hidden">
                     {/* Sidebar */}
                     <AppSidebar />
 
                     {/* Main Content */}
-                    <div className="flex flex-col flex-1 min-h-screen w-full">
-                         <Suspense fallback={null}>
+                    <div className="flex flex-col flex-1 min-h-screen min-w-0">
+                        <Suspense fallback={null}>
                             <Navbar />
                         </Suspense>
-                        <main className="flex-1 w-full">{children}</main>
+                        <main className="flex-1 min-w-0">
+                            {children}
+                        </main>
                     </div>
                 </div>
             </SidebarProvider>

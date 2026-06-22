@@ -5,66 +5,14 @@ import { Input } from "@/components/ui/input";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { useSearch } from "@/hooks/useSearch";
 import { BellRing, Search, X } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
 import { useNavbarUI } from "./useNavbar";
-
-function useHideOnScroll(threshold = 8) {
-    const [hidden, setHidden] = useState(false);
-    const lastY = useRef(0);
-
-    useEffect(() => {
-        const onScroll = () => {
-            const y = window.scrollY;
-            const diff = y - lastY.current;
-
-            if (Math.abs(diff) < threshold) return;
-
-            setHidden(diff > 0 && y > 60);
-            lastY.current = y;
-        };
-
-        window.addEventListener("scroll", onScroll, { passive: true });
-        return () => window.removeEventListener("scroll", onScroll);
-    }, [threshold]);
-
-    return hidden;
-}
-
-function useIsMobile() {
-    const [isMobile, setIsMobile] = useState(false);
-
-    useEffect(() => {
-        const mq = window.matchMedia("(hover: none) and (pointer: coarse)");
-        setIsMobile(mq.matches);
-
-        const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
-        mq.addEventListener("change", handler);
-
-        return () => mq.removeEventListener("change", handler);
-    }, []);
-
-    return isMobile;
-}
 
 export function Navbar() {
     const { isAtTop, openSearch, setOpenSearch } = useNavbarUI();
     const { setValue, value, clearSearch } = useSearch();
 
-    const isMobile = useIsMobile();
-    const hidden = useHideOnScroll(8);
-
-    const shouldHide = isMobile && hidden;
-
     return (
-        <div
-            className="sticky z-50 w-full border-b border-white/10 flex flex-col bg-[#0B0B0B]"
-            style={{
-                top: shouldHide ? "-90px" : "0px",
-                transition: "top 0.3s ease-in-out",
-                willChange: "top",
-                backfaceVisibility: "hidden",
-            }}
-        >
+        <div className=" top-0 z-40 border-b border-white/10 flex flex-col bg-transparent">
             {/* ── Barra info (desktop) ── */}
             <div
                 className={`hidden md:grid transition-all duration-200 ${
@@ -127,7 +75,7 @@ export function Navbar() {
                 }`}
             >
                 <div className="overflow-hidden">
-                    <div className="px-4 pb-3 bg-[#0B0B0B]">
+                    <div className="px-4 py-3 bg-[#0B0B0B]">
                         <div className="relative">
                             <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-gray-500" />
 
@@ -152,7 +100,7 @@ export function Navbar() {
             </div>
 
             {/* ── DESKTOP ── */}
-            <div className="hidden md:flex justify-between items-center bg-[#0B0B0B]/90 backdrop-blur-sm px-10 py-5">
+            <div className="hidden md:flex justify-between items-center bg-transparent  backdrop-blur-sm px-10 py-5">
                 <div className="flex items-center gap-4">
                     <SidebarTrigger />
 

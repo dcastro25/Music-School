@@ -9,7 +9,11 @@ const nextConfig: NextConfig = {
             },
             {
                 protocol: "https",
-                hostname: "artwork.art-cdn.com", // 👈
+                hostname: "artwork.art-cdn.com",
+            },
+            {
+                protocol: "https",
+                hostname: "*.ufs.sh", 
             },
         ],
     },

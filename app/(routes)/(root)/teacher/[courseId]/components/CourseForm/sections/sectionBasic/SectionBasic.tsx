@@ -160,23 +160,14 @@ export function SectionBasic({ form, course }: Props) {
                                                     </SelectTrigger>
                                                 </FormControl>
                                                 <SelectContent>
-                                                    <SelectItem value="web-dev">
-                                                        Desarrollo Web
+                                                    <SelectItem value="instrumentos">
+                                                        Instrumentos
                                                     </SelectItem>
-                                                    <SelectItem value="mobile-dev">
-                                                        Desarrollo Móvil
+                                                    <SelectItem value="canto">
+                                                        Canto
                                                     </SelectItem>
-                                                    <SelectItem value="data-science">
-                                                        Ciencia de Datos
-                                                    </SelectItem>
-                                                    <SelectItem value="design">
-                                                        Diseño
-                                                    </SelectItem>
-                                                    <SelectItem value="marketing">
-                                                        Marketing Digital
-                                                    </SelectItem>
-                                                    <SelectItem value="business">
-                                                        Negocios
+                                                    <SelectItem value="teoria">
+                                                        Teoría y Composición
                                                     </SelectItem>
                                                 </SelectContent>
                                             </Select>
@@ -292,11 +283,11 @@ export function SectionBasic({ form, course }: Props) {
                 </div>
                 {/* 👈 CourseChapter aquí dentro del col-span-2 */}
             </div>
-                <CourseChapter
-                    courseId={course?.id}
-                    chapters={chapterList}
-                    onChaptersChange={setChapterList}
-                />
+            <CourseChapter
+                courseId={course?.id}
+                chapters={chapterList}
+                onChaptersChange={setChapterList}
+            />
         </TabsContent>
     );
 }

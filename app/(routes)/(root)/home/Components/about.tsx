@@ -53,21 +53,18 @@ export function About() {
     return (
         <section
             id="nosotros"
-            className="py-10 bg-secondary/40 relative overflow-hidden"
+            className="pt-10 pb-7 bg-secondary/40 relative overflow-hidden"
         >
             {/* Background decoration */}
             <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
             <div className="absolute bottom-0 left-0 w-72 h-72 bg-[var(--gold-400)]/5 rounded-full blur-3xl" />
 
-            <div className="container mx-auto px-4 relative">
+            <div className="container mx-auto px-4 md:px-10 md:pl-12 relative">
                 <div className="grid lg:grid-cols-2 gap-10 md:gap-14 lg:gap-20 items-center">
                     {/* Image Side */}
                     <div
                         ref={imagesRef}
-                        // FIX: transition-all -> transition-[opacity,transform].
-                        // transition-all obliga al navegador a vigilar TODAS las propiedades CSS
-                        // en cada frame; al animar esto durante scroll activo en Android, sobrecarga
-                        // el compositor y produce el glitch tipo "estática".
+
                         className={`relative order-2 lg:order-1 transition-[opacity,transform] duration-1000 will-change-transform ${
                             imagesVisible
                                 ? "opacity-100 translate-x-0"
@@ -113,13 +110,7 @@ export function About() {
                             </div>
                         </div>
 
-                        {/* Experience badge */}
-                        {/* FIX: se quitó backdrop-blur-sm. backdrop-filter + un ancestro que se está
-                            trasladando (translate-x) al mismo tiempo es una combinación muy propensa
-                            a corromper frames en Chrome/Android (Skia tiene que re-samplear el fondo
-                            en cada frame mientras todo se mueve). Se reemplaza por un fondo sólido
-                            semitransparente (bg-card/95), que da un efecto visual similar sin el
-                            costo de muestreo en tiempo real. */}
+
                         <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 bg-card/95 border border-primary/20 text-foreground px-4 py-2 rounded-2xl shadow-2xl z-20 flex items-center gap-4">
                             <span className="text-2xl font-bold text-primary">
                                 15+
@@ -136,7 +127,6 @@ export function About() {
                     {/* Content Side */}
                     <div
                         ref={contentRef}
-                        // FIX: misma razón que arriba — transition-all -> propiedades específicas.
                         className={`order-1 lg:order-2 transition-[opacity,transform] duration-1000 delay-200 will-change-transform ${
                             contentVisible
                                 ? "opacity-100 translate-x-0"
@@ -189,27 +179,6 @@ export function About() {
                                 </div>
                             ))}
                         </div>
-
-                        {/* Achievements */}
-                        {/* <div className="bg-card p-6 rounded-2xl border border-border/50 shadow-sm">
-                            <h3 className="font-semibold text-foreground mb-4 flex items-center gap-2">
-                                <span className="w-8 h-0.5 bg-primary rounded-full" />
-                                Nuestros Logros
-                            </h3>
-                            <ul className="space-y-3">
-                                {achievements.map((achievement, i) => (
-                                    <li
-                                        key={achievement}
-                                        className="flex items-center gap-3 text-muted-foreground group"
-                                    >
-                                        <CheckCircle className="h-4 w-4 text-primary flex-shrink-0 transition-transform group-hover:scale-110" />
-                                        <span className="text-sm group-hover:text-foreground transition-colors">
-                                            {achievement}
-                                        </span>
-                                    </li>
-                                ))}
-                            </ul>
-                        </div> */}
                     </div>
                 </div>
             </div>

@@ -24,7 +24,7 @@ export const routes = [
     {
         id: 3,
         title: "Mis Cursos",
-        url: "/my-courses",
+        url: "/myCourses",
         icon: BookOpen,
     },
     {

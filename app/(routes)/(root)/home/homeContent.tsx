@@ -1,4 +1,5 @@
-import React from "react";
+
+import { Course } from "@/app/generated/prisma/client";
 import {
     About,
     CoursesSection,
@@ -12,13 +13,13 @@ import {
     InstrumentsSection,
 } from "./Components";
 
-export function HomeContent() {
+export function HomeContent({ courses }: { courses: Course[] }) {
     return (
         <div>
             <HeroSectionMobile />
             <HeroSection />
             <About />
-            <CoursesSection />
+            <CoursesSection courses={courses} />
             <InstrumentsSection />
             <FaqSection/>
             <CtaBanner/>
