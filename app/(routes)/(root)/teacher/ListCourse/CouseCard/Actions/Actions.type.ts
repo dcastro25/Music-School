@@ -1,4 +1,4 @@
-// Actions.type.ts
+
 export type ActionsProps = {
     courseId: string;
     CourseName: string;

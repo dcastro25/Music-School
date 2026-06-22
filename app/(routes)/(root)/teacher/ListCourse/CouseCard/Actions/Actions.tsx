@@ -3,7 +3,7 @@
 
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { ActionsProps } from "./Actions.type";
+import { ActionsProps } from "./actions.type";
 
 import {
     DropdownMenu,
