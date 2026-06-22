@@ -217,8 +217,7 @@ export function DataTable({ DataTable: initialData }: DataTableProps) {
                     courseId={row.original.id}
                     CourseName={row.original.courseName}
                     isPublished={row.original.isPublished}
-                    onPublishChange={(newState) => {
-                        // Actualiza el estado local del curso
+                    onPublishChange={(newState: boolean) => {
                         setData(
                             data.map((c) =>
                                 c.id === row.original.id
