@@ -11,6 +11,7 @@ import {
     HeroSection,
     HeroSectionMobile,
     InstrumentsSection,
+    MobileCourseCarousel,
 } from "./Components";
 
 export function HomeContent({ courses }: { courses: Course[] }) {
@@ -20,6 +21,7 @@ export function HomeContent({ courses }: { courses: Course[] }) {
             <HeroSection />
             <About />
             <CoursesSection courses={courses} />
+            <MobileCourseCarousel courses={courses}/>
             <InstrumentsSection />
             <FaqSection/>
             <CtaBanner/>

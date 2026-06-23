@@ -69,10 +69,6 @@ function InstrumentCard({
     return (
         <div
             ref={ref}
-            // FIX: transition-all -> transition-[opacity,transform]. Esta tarjeta entera
-            // (imagen + texto + botón) se traslada en Y al entrar en viewport durante el
-            // scroll; con transition-all el navegador vigila propiedades de más (sombras,
-            // colores, bordes de los hijos) en cada frame, lo cual es innecesario y caro.
             className={`grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-20 items-center
                 pt-16 sm:pt-20 lg:pt-0 first:pt-0
                 transition-[opacity,transform] duration-1000 will-change-transform ${
@@ -104,10 +100,6 @@ function InstrumentCard({
                         className="object-cover rounded-3xl relative z-10 shadow-xl transition-transform duration-500 group-hover:scale-[1.02]"
                     />
 
-                    {/* Fun fact */}
-                    {/* FIX: transition-all -> transition-[opacity,transform]. Aquí sí cambian
-                        ambas propiedades a la vez (opacity y translate-y), pero no hace falta
-                        vigilar todas las demás. */}
                     <div className="absolute -bottom-5 sm:-bottom-6 left-3 right-3 sm:left-4 sm:right-4 bg-card p-3 sm:p-4 rounded-xl shadow-xl z-20 border border-border/50 opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-[opacity,transform] duration-500 transform lg:translate-y-4 lg:group-hover:translate-y-0">
                         <p className="text-xs text-muted-foreground font-serif italic">
                             <span className="text-primary font-semibold font-sans not-italic">
@@ -133,7 +125,7 @@ function InstrumentCard({
                     </div>
                 </div>
 
-                <p className="text-muted-foreground text-base sm:text-lg leading-relaxed mb-6 sm:mb-8 font-serif">
+                <p className="text-muted-foreground text-center leading-relaxed mb-6 sm:mb-8 font-serif">
                     {instrument.description}
                 </p>
 
@@ -141,9 +133,6 @@ function InstrumentCard({
                     {instrument.features.map((feature) => (
                         <div
                             key={feature}
-                            // FIX: transition-all -> transition-colors. Acá solo cambian
-                            // background-color y border-color en hover, no hay transform
-                            // ni opacity de por medio.
                             className="flex items-center gap-3 p-3 rounded-xl bg-secondary/50 border border-border/30 transition-colors duration-300 hover:bg-primary/5 hover:border-primary/20 group/feat"
                         >
                             <div className="w-2 h-2 sm:w-2.5 sm:h-2.5 bg-primary rounded-full shrink-0 transition-transform group-hover/feat:scale-125" />
@@ -154,9 +143,6 @@ function InstrumentCard({
                     ))}
                 </div>
 
-                {/* FIX: transition-all -> transition-transform. El hover solo mueve el
-                    botón en Y (-translate-y-0.5); los cambios de color del variant del
-                    Button ya tienen su propia transición interna. */}
                 <Button className="w-full sm:w-auto bg-primary text-primary-foreground hover:bg-primary/90 font-semibold shadow-lg shadow-primary/20 transition-transform duration-300 hover:-translate-y-0.5 group/btn">
                     Explorar Cursos de {instrument.name}
                     <ArrowRight className="h-4 w-4 ml-2 transition-transform group-hover/btn:translate-x-1" />
@@ -197,7 +183,7 @@ export function InstrumentsSection() {
                     <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white/70 mb-4 sm:mb-5 text-balance leading-tight">
                         Los <span className="text-primary">Tres Pilares</span> del Vallenato
                     </h2>
-                    <p className="text-muted-foreground font-serif text-lg">
+                    <p className="text-muted-foreground font-serif">
                         Acordeon, caja y guacharaca: la trilogia sagrada que da
                         vida a nuestra musica. Aprende a dominar cada uno con
                         maestros especializados.

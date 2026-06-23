@@ -142,7 +142,7 @@ export function About() {
                                 Artistas del Vallenato
                             </span>
                         </h2>
-                        <p className="text-primary-text leading-relaxed mb-6 font-serif text-lg">
+                        <p className="text-primary-text leading-relaxed mb-6 font-serif ">
                             La Escuela Vallenata Hector Ibañez nacio del sueño
                             de preservar y difundir nuestra musica tradicional.
                             Fundada por el maestro Hector Ibañez, reconocido

@@ -61,7 +61,7 @@ export function FaqSection() {
                     {/* Header */}
                     <div
                         ref={headerRef}
-                        className={`text-center mb-16 transition-all duration-1000 ${
+                        className={`text-center mb-10 transition-all duration-1000 ${
                             headerVisible
                                 ? "opacity-100 translate-y-0"
                                 : "opacity-0 translate-y-8"
@@ -77,7 +77,7 @@ export function FaqSection() {
                             Resolvemos Tus 
                             <span className="text-primary"> Dudas</span>
                         </h2>
-                        <p className="text-muted-foreground font-serif text-lg max-w-2xl mx-auto">
+                        <p className="text-muted-foreground font-serif max-w-2xl mx-auto">
                             Todo lo que necesitas saber antes de comenzar tu
                             viaje musical con nosotros.
                         </p>

@@ -1,6 +1,7 @@
 export {About} from "./about"
 export {HeroSection} from "./heroSection"
 export {CoursesSection} from "./courseSection"
+export {MobileCourseCarousel} from "./courseSectionMobile"
 export {HeroSectionMobile} from "./heroSectionMobile"
 export {InstrumentsSection} from "./instrumentsSection"
 export {FaqSection} from "./faqSection"
