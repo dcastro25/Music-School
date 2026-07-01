@@ -1,8 +1,7 @@
 "use client";
 
-import React from "react";
-import { SidebarProvider } from "@/components/ui/sidebar";
+import { CartProvider } from "@/app/(routes)/(root)/Components/Shared/ListCourse/CouseCard/CartContext";
 
 export function Providers({ children }: { children: React.ReactNode }) {
-    return <SidebarProvider>{children}</SidebarProvider>;
+  return <CartProvider>{children}</CartProvider>;
 }

@@ -32,7 +32,7 @@ export function AppSidebar() {
             transition-[width] duration-300 ease-in-out
             group-data-[collapsible=icon]:w-20
             z-50 shrink-0
-            [&[data-state=expanded]]:w-44 xl:[&[data-state=expanded]]:w-64
+            data-[state=expanded]:w-44 xl:data-[state=expanded]:w-64
         "
         >
             <SidebarContent className="bg-[#120d08] text-foreground flex flex-col h-full p-0 border-r border-ring/20 shadow-xl overflow-hidden">

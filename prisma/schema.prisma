@@ -32,6 +32,7 @@ model Chapter {
     position    Int
     isPublished Boolean @default(false)
     isFree      Boolean @default(false)
+    duration    String?
 
     courseId String?
     course   Course? @relation(fields: [courseId], references: [id], onDelete: Cascade)

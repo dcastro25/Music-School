@@ -56,7 +56,7 @@ export function CoursesSection({ courses }: CoursesSectionProps) {
         <section id="cursos" className="py-20 relative overflow-hidden hidden md:block">
             <div className="absolute inset-0 note-pattern opacity-20" />
             <div className="absolute top-40 right-0 w-80 h-80 bg-primary/5 rounded-full blur-3xl" />
-            <div className="absolute bottom-20 left-0 w-64 h-64 bg-[var(--gold-400)]/5 rounded-full blur-3xl" />
+            <div className="absolute bottom-20 left-0 w-64 h-64 bg-(--gold-400)/5 rounded-full blur-3xl" />
 
             <div className="container mx-auto px-4 relative">
                 <div
@@ -87,7 +87,6 @@ export function CoursesSection({ courses }: CoursesSectionProps) {
                     </p>
                 </div>
 
-                {/* Category filters */}
                 <div className="flex flex-wrap justify-center gap-3 mb-14">
                     {categories.map((cat) => (
                         <button

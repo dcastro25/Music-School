@@ -23,7 +23,7 @@ import {
     Clock,
 } from "lucide-react";
 import { useSearchParams } from "next/navigation";
-import { Actions } from "../ListCourse/CouseCard/Actions";
+import { Actions } from "../../Components/Shared/ListCourse/CouseCard/Actions";
 
 type DataTableProps = {
     DataTable: Course[];

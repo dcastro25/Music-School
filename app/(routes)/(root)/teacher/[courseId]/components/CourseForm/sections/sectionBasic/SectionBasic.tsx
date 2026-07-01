@@ -31,7 +31,7 @@ import { FormValues } from "../../CourseForm.form";
 import { CourseChapter, CourseMedia } from "../../components";
 import { CoursePrice } from "../../components";
 import { useState } from "react";
-import { Chapter } from "@/app/generated/prisma/client"; // 👈
+import { Chapter } from "@/app/generated/prisma/client"; 
 
 type Props = {
     form: UseFormReturn<FormValues>;
@@ -40,19 +40,18 @@ type Props = {
         imageUrl?: string | null;
         price?: number | null;
         isFree?: boolean | null;
-        chapters?: Chapter[]; // 👈
+        chapters?: Chapter[];
     };
+        chapterList: Chapter[];
+    onChaptersChange: (chapters: Chapter[]) => void;
 };
 
-export function SectionBasic({ form, course }: Props) {
-    const [chapterList, setChapterList] = useState<Chapter[]>(
-        course?.chapters ?? [],
-    );
+export function SectionBasic({ form, course, chapterList, onChaptersChange, }: Props) {
 
     return (
         <TabsContent value="basic" className="space-y-6">
             <div className="grid gap-6 lg:grid-cols-3">
-                {/* Main Info */}
+
                 <div className="lg:col-span-2 space-y-6">
                     <Card className="border-border/50 bg-background-secondary backdrop-blur-sm">
                         <CardHeader>
@@ -65,7 +64,7 @@ export function SectionBasic({ form, course }: Props) {
                             </CardDescription>
                         </CardHeader>
                         <CardContent className="space-y-6">
-                            {/* Título */}
+
                             <FormField
                                 control={form.control}
                                 name="courseName"
@@ -105,7 +104,6 @@ export function SectionBasic({ form, course }: Props) {
                                 )}
                             />
 
-                            {/* Descripción */}
                             <FormField
                                 control={form.control}
                                 name="description"
@@ -136,8 +134,6 @@ export function SectionBasic({ form, course }: Props) {
                                     </FormItem>
                                 )}
                             />
-
-                            {/* Categoría, Duración y Nivel */}
                             <div className="grid gap-6 sm:grid-cols-3">
                                 <FormField
                                     control={form.control}
@@ -266,7 +262,6 @@ export function SectionBasic({ form, course }: Props) {
                     </Card>
                 </div>
 
-                {/* Sidebar */}
                 <div className="flex flex-col gap-3">
                     <CourseMedia
                         imageCourse={form.watch("imageUrl")}
@@ -281,12 +276,12 @@ export function SectionBasic({ form, course }: Props) {
                         onPriceChange={(p) => form.setValue("price", p)}
                     />
                 </div>
-                {/* 👈 CourseChapter aquí dentro del col-span-2 */}
+
             </div>
             <CourseChapter
                 courseId={course?.id}
                 chapters={chapterList}
-                onChaptersChange={setChapterList}
+                onChaptersChange={onChaptersChange}  
             />
         </TabsContent>
     );

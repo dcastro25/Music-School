@@ -105,18 +105,13 @@ export function Navbar() {
                     <SidebarTrigger />
 
                     <div className="flex gap-4 items-center">
-                        <img
-                            src="/img/logo.jpg"
-                            className="h-14 rounded-2xl"
-                        />
+                        <img src="/img/logo.jpg" className="h-14 rounded-2xl" />
 
                         <div>
                             <h1 className="text-white font-bold text-xl">
                                 Hector Ibañez
                             </h1>
-                            <p className="text-gray-400">
-                                Escuela vallenata
-                            </p>
+                            <p className="text-gray-400">Escuela vallenata</p>
                         </div>
                     </div>
                 </div>

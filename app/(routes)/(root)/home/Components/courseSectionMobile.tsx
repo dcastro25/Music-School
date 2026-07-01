@@ -88,7 +88,7 @@ function CourseCardMobile({
     return (
         <div
             className="
-                flex-shrink-0 w-[220px] rounded-2xl overflow-hidden
+                shrink-0 w-55 rounded-2xl overflow-hidden
                 bg-card border border-primary/20
                 transition-transform duration-200 active:scale-[0.97]
                 snap-start
@@ -96,7 +96,7 @@ function CourseCardMobile({
             style={{ transitionDelay: `${index * 60}ms` }}
         >
             {/* Image */}
-            <div className="relative w-full aspect-[16/11] overflow-hidden bg-background">
+            <div className="relative w-full aspect-16/11 overflow-hidden bg-background">
                 <Image
                     src={safeImage}
                     alt={courseName}
@@ -327,7 +327,7 @@ export function MobileCourseCarousel({ courses }: MobileCourseCarouselProps) {
             {/* Background decorations (matching existing section style) */}
             <div className="absolute inset-0 note-pattern opacity-20 pointer-events-none" />
             <div className="absolute top-20 right-0 w-48 h-48 bg-primary/5 rounded-full blur-3xl pointer-events-none" />
-            <div className="absolute bottom-10 left-0 w-40 h-40 bg-[var(--gold-400)]/5 rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute bottom-10 left-0 w-40 h-40 bg-(--gold-400)/5 rounded-full blur-3xl pointer-events-none" />
 
             <div className="relative px-4">
                 {/* ── Header ───────────────────────────────────────────────── */}
@@ -364,7 +364,7 @@ export function MobileCourseCarousel({ courses }: MobileCourseCarouselProps) {
                             onClick={() => handleCategory(id)}
                             className={`
                                 flex items-center gap-1.5 px-3.5 py-1.5 rounded-full
-                                text-xs font-semibold whitespace-nowrap flex-shrink-0
+                                text-xs font-semibold whitespace-nowrap shrink-0
                                 border transition-all duration-200
                                 ${
                                     activeCategory === id
@@ -417,7 +417,7 @@ export function MobileCourseCarousel({ courses }: MobileCourseCarouselProps) {
                                 ))}
                                 {/* Trailing spacer so last card isn't clipped */}
                                 <div
-                                    className="w-4 flex-shrink-0"
+                                    className="w-4 shrink-0"
                                     aria-hidden
                                 />
                             </div>
@@ -464,7 +464,7 @@ export function MobileCourseCarousel({ courses }: MobileCourseCarouselProps) {
                         className="
                         flex items-center gap-1.5 text-xs font-semibold
                         bg-primary text-[#12121E]
-                        px-4 py-2.5 rounded-full flex-shrink-0
+                        px-4 py-2.5 rounded-full shrink-0
                         shadow-lg shadow-primary/20
                         transition-transform duration-150 active:scale-95
                         whitespace-nowrap

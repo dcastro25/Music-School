@@ -8,44 +8,26 @@ const footerLinks = {
     cursos: [
         { label: "Acordeon", href: "#cursos" },
         { label: "Caja Vallenata", href: "#cursos" },
-        { label: "Guacharaca", href: "#cursos" },
-        { label: "Canto Vallenato", href: "#cursos" },
         { label: "Composicion", href: "#cursos" },
     ],
     escuela: [
         { label: "Sobre Nosotros", href: "#nosotros" },
-        { label: "Metodologia", href: "#metodo" },
         { label: "Instrumentos", href: "#instrumentos" },
-        { label: "Testimonios", href: "#testimonios" },
         { label: "Preguntas Frecuentes", href: "#faq" },
-    ],
-    recursos: [
-        { label: "Blog Vallenato", href: "#" },
-        { label: "Historia del Vallenato", href: "#" },
-        { label: "Videos Tutoriales", href: "#" },
-        { label: "Galeria de Fotos", href: "#" },
-        { label: "Contacto", href: "#contacto" },
     ],
 };
 
 export function Footer() {
     return (
-        <footer className="bg-background-secondary relative overflow-hidden ">
-
-            {/* Línea */}
+        <footer className="w-full bg-background-secondary relative overflow-hidden px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 2xl:px-16">
+            
             <div className="h-1 bg-linear-to-r from-transparent via-foreground/30 to-transparent" />
 
-            <div className="container mx-auto px-4 py-10 md:py-10">
-
-                {/* GRID */}
+            <div className="w-full max-w-full mx-auto py-10">
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-10 mb-8 text-center sm:text-left">
-
-                    {/* BRAND */}
+                    
                     <div className="lg:col-span-2 flex flex-col items-center sm:items-start">
-                        <Link
-                            href="/"
-                            className="flex items-center gap-3 mb-5"
-                        >
+                        <Link href="/" className="flex items-center gap-3 mb-5">
                             <Image
                                 src="/img/logo.jpg"
                                 alt="Hector Ibañez Escuela Vallenata"
@@ -64,7 +46,9 @@ export function Footer() {
                         </Link>
 
                         <p className="text-ring mb-5 max-w-xs text-sm leading-relaxed">
-                            Formando artistas del vallenato desde 2009. Preservamos la tradición musical del Caribe colombiano.
+                            Formando artistas del vallenato desde 2009.
+                            Preservamos la tradición musical del Caribe
+                            colombiano.
                         </p>
 
                         <div className="flex items-center gap-2 text-foreground/80 text-sm">
@@ -74,10 +58,9 @@ export function Footer() {
                     </div>
 
                     {/* SECCIONES */}
-                    {[ 
+                    {[
                         { title: "Cursos", data: footerLinks.cursos },
                         { title: "Escuela", data: footerLinks.escuela },
-                        { title: "Recursos", data: footerLinks.recursos },
                     ].map((section) => (
                         <div key={section.title}>
                             <h4 className="font-semibold text-foreground mb-3 text-sm uppercase tracking-wider">
@@ -102,7 +85,6 @@ export function Footer() {
 
                 {/* BOTTOM */}
                 <div className="border-t border-ring/30 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-center md:text-left">
-
                     <div className="flex flex-col sm:flex-row items-center gap-2 text-sm text-ring">
                         <p>© 2026 Escuela Vallenata Hector Ibañez</p>
 
@@ -117,7 +99,8 @@ export function Footer() {
 
                     <div className="flex items-center gap-4">
                         <p className="text-sm text-ring flex items-center gap-1">
-                            Hecho con <Heart className="h-3.5 w-3.5" /> Lorica Colombia
+                            Hecho con <Heart className="h-3.5 w-3.5" /> Lorica
+                            Colombia
                         </p>
 
                         <a

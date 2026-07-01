@@ -1,6 +1,4 @@
-
 import { prisma } from "@/lib/prisma";
-import { Footer } from "./Components/Footer";
 import { HomeContent } from "./home";
 
 export default async function Home() {
@@ -12,7 +10,6 @@ export default async function Home() {
     return (
         <div>
             <HomeContent courses={courses} />
-            <Footer />
         </div>
     );
 }

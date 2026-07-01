@@ -132,7 +132,7 @@ export function CourseForm({ course, onSuccess, onCourseCreated }: Props) {
             );
         }
     };
-    
+
     const onError = (errors: any) => {
         console.log("Errores de validación:", errors);
     };
@@ -206,7 +206,12 @@ export function CourseForm({ course, onSuccess, onCourseCreated }: Props) {
                             </TabsList>
 
                             {/* Tab: Básico */}
-                            <SectionBasic form={form} course={course} />
+                            <SectionBasic
+                                form={form}
+                                course={course}
+                                chapterList={chapterList}
+                                onChaptersChange={setChapterList}
+                            />
 
                             {/* Tab: Contenido */}
                             <TabsContent value="content" className="space-y-6">
