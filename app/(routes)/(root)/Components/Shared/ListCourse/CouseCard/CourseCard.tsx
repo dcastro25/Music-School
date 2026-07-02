@@ -77,13 +77,13 @@ export function CourseCard({
             onMouseLeave={() => setIsHovered(false)}
         >
             {/* IMAGE */}
-            <div className="relative aspect-[16/10] overflow-hidden">
+            <div className="relative aspect-[16/10] overflow-hidden [-webkit-mask-image:-webkit-radial-gradient(white,black)]">
                 <Image
                     src={getCourseImage(imageUrl)}
                     alt={courseName}
                     fill
                     sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 360px"
-                    className={`object-cover transition-transform duration-700 will-change-transform [transform:translateZ(0)] ${
+                    className={`object-cover transition-transform duration-700 ${
                         isHovered ? "sm:scale-110" : "scale-100"
                     }`}
                 />
@@ -150,7 +150,7 @@ export function CourseCard({
             </div>
 
             {/* Brillo sutil en el borde superior al hacer hover */}
-            <div className="absolute inset-x-0 top-0 h-0.5 bg-gradient-to-r from-transparent via-primary to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-500 will-change-transform" />
+            <div className="absolute inset-x-0 top-0 h-0.5 bg-gradient-to-r from-transparent via-primary to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-500" />
         </div>
     );
 }
