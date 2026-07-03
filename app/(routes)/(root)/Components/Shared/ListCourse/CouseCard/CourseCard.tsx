@@ -68,14 +68,15 @@ export function CourseCard({
             {...props}
             className={cn(
                 "group relative bg-card rounded-2xl border border-border/60 overflow-hidden shadow-sm w-full flex flex-col h-full min-w-0",
-                "transition-opacity duration-500",
+                "opacity-100", // mobile: siempre visible, sin animación
+                "sm:transition-opacity sm:duration-500",
                 "sm:hover:shadow-2xl sm:hover:-translate-y-1 sm:hover:border-primary/40 sm:transition-[transform,box-shadow,border-color,opacity] sm:duration-500",
-                isVisible ? "opacity-100" : "opacity-0",
+                "sm:[&.reveal]:opacity-100 sm:[&:not(.reveal)]:opacity-0",
+                isVisible && "reveal",
                 className,
             )}
             style={{ transitionDelay: `${index * 80}ms` }}
         >
-
             <div className="relative aspect-[16/10] overflow-hidden [-webkit-mask-image:-webkit-radial-gradient(white,black)]">
                 <Image
                     src={getCourseImage(imageUrl)}
@@ -90,22 +91,25 @@ export function CourseCard({
                 </span>
 
                 <div className="absolute bottom-2 left-2 sm:bottom-3 sm:left-3 drop-shadow-lg bg-background/70 px-3 py-0.5 rounded-full shadow-md">
-                    <span className="text-base font-extrabold text-white/90 
-                    ">
-                        {price
-                            ? `$${price.toLocaleString("es-CO")}`
-                            : "Gratis"}
-                    </span>
-                    {price && (
-                        <span className="ml-1 text-[10px] sm:text-xs font-medium text-white/80">
-                            COP
+                    {price === 0 ? (
+                        <span className="text-xs sm:text-base font-extrabold text-green-400">
+                            Gratis
                         </span>
+                    ) : (
+                        <>
+                            <span className="text-xs sm:text-base font-extrabold text-white/90">
+                                ${price.toLocaleString("es-CO")}
+                            </span>
+                            <span className="ml-1 text-[9px] sm:text-xs font-medium text-white/80">
+                                COP
+                            </span>
+                        </>
                     )}
                 </div>
             </div>
 
             <div className="p-3 sm:p-4 xl:p-5 flex flex-col gap-2 sm:gap-3 flex-1">
-                <h3 className="text-sm sm:text-base xl:text-lg font-bold text-foreground sm:group-hover:text-primary sm:transition-colors sm:duration-300 line-clamp-2 leading-snug">
+                <h3 className="text-sm sm:text-base xl:text-xl text-foreground sm:group-hover:text-primary sm:transition-colors sm:duration-300 line-clamp-2 leading-snug">
                     {courseName}
                 </h3>
 
@@ -128,9 +132,13 @@ export function CourseCard({
 
                 <div className="mt-auto pt-2 sm:pt-3">
                     <CourseDetailsDialog course={course}>
-                        <Button size="sm" className="w-full font-semibold gap-1.5">
+                        <Button
+                            variant="outline"
+                            size="sm"
+                            className="w-full font-semibold gap-1 text-xs sm:text-sm md:text-base py-0.5 sm:py-2"
+                        >
                             Ver curso
-                            <ArrowRight className="h-3.5 w-3.5" />
+                            <ArrowRight className="h-3 w-3 sm:h-4 sm:w-4" />
                         </Button>
                     </CourseDetailsDialog>
                 </div>
