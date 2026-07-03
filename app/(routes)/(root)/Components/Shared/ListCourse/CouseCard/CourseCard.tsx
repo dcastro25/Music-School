@@ -68,7 +68,8 @@ export function CourseCard({
             {...props}
             className={cn(
                 "group relative bg-card rounded-2xl border border-border/60 overflow-hidden shadow-sm w-full flex flex-col h-full min-w-0",
-                "opacity-100", // mobile: siempre visible, sin animación
+                "[transform:translateZ(0)] [backface-visibility:hidden] isolate",
+                "opacity-100",
                 "sm:transition-opacity sm:duration-500",
                 "sm:hover:shadow-2xl sm:hover:-translate-y-1 sm:hover:border-primary/40 sm:transition-[transform,box-shadow,border-color,opacity] sm:duration-500",
                 "sm:[&.reveal]:opacity-100 sm:[&:not(.reveal)]:opacity-0",
