@@ -77,7 +77,7 @@ export function CourseCard({
             )}
             style={{ transitionDelay: `${index * 80}ms` }}
         >
-            <div className="relative aspect-[16/10] overflow-hidden [-webkit-mask-image:-webkit-radial-gradient(white,black)]">
+            <div className="relative aspect-[16/10] overflow-hidden sm:[-webkit-mask-image:-webkit-radial-gradient(white,black)]">
                 <Image
                     src={getCourseImage(imageUrl)}
                     alt={courseName}
