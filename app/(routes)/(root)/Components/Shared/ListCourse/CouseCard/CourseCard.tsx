@@ -127,7 +127,7 @@ export function CourseCard({
                     </span>
                     <span className="inline-flex items-center gap-1 bg-muted text-muted-foreground text-[10px] sm:text-xs font-medium px-2 py-1 rounded-full">
                         <BookOpen className="h-3 w-3 text-primary/70 shrink-0" />
-                        {chapters.length} cap.
+                        {chapters?.length ?? 0} cap.
                     </span>
                 </div>
 

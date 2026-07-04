@@ -44,7 +44,9 @@ export function CourseDetailsDialog({
     const [open, setOpen] = useState(false);
     const inCart = isInCart(course.id);
 
-    const totalMinutes = course.chapters.reduce((sum, c) => {
+    const chapters = course.chapters ?? [];
+
+    const totalMinutes = chapters.reduce((sum, c) => {
         const m = Number.parseInt(c.duration ?? "0");
         return sum + (Number.isNaN(m) ? 0 : m);
     }, 0);
@@ -93,7 +95,7 @@ export function CourseDetailsDialog({
                         <Stat
                             icon={BookOpen}
                             label="Capítulos"
-                            value={`${course.chapters.length}`}
+                            value={`${chapters.length}`}
                         />
                     </div>
 
@@ -104,51 +106,57 @@ export function CourseDetailsDialog({
                                 Contenido del curso
                             </h4>
                             {totalMinutes > 0 && (
-                                <span className="text-xs text-muted-foreground">{`${course.chapters.length} capítulos · ${totalMinutes} min`}</span>
+                                <span className="text-xs text-muted-foreground">{`${chapters.length} capítulos · ${totalMinutes} min`}</span>
                             )}
                         </div>
-                        <ul className="overflow-hidden rounded-xl border border-border">
-                            {course.chapters.map((chapter) => (
-                                <li
-                                    key={chapter.id}
-                                    className="flex items-start gap-3 border-b border-border bg-card px-3 py-3 last:border-b-0 sm:px-4"
-                                >
-                                    <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-secondary text-xs font-semibold text-secondary-foreground">
-                                        {chapter.position}
-                                    </span>
-                                    <div className="min-w-0 flex-1">
-                                        <div className="flex items-center gap-2">
-                                            <p className="truncate text-sm font-medium text-foreground">
-                                                {chapter.title}
-                                            </p>
-                                            {chapter.isFree && (
-                                                <Badge
-                                                    variant="secondary"
-                                                    className="h-5 px-1.5 text-[10px]"
-                                                >
-                                                    Gratis
-                                                </Badge>
+                        {chapters.length > 0 ? (
+                            <ul className="overflow-hidden rounded-xl border border-border">
+                                {chapters.map((chapter) => (
+                                    <li
+                                        key={chapter.id}
+                                        className="flex items-start gap-3 border-b border-border bg-card px-3 py-3 last:border-b-0 sm:px-4"
+                                    >
+                                        <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-secondary text-xs font-semibold text-secondary-foreground">
+                                            {chapter.position}
+                                        </span>
+                                        <div className="min-w-0 flex-1">
+                                            <div className="flex items-center gap-2">
+                                                <p className="truncate text-sm font-medium text-foreground">
+                                                    {chapter.title}
+                                                </p>
+                                                {chapter.isFree && (
+                                                    <Badge
+                                                        variant="secondary"
+                                                        className="h-5 px-1.5 text-[10px]"
+                                                    >
+                                                        Gratis
+                                                    </Badge>
+                                                )}
+                                            </div>
+                                            {chapter.description && (
+                                                <p className="mt-0.5 line-clamp-1 text-xs text-muted-foreground">
+                                                    {chapter.description}
+                                                </p>
                                             )}
                                         </div>
-                                        {chapter.description && (
-                                            <p className="mt-0.5 line-clamp-1 text-xs text-muted-foreground">
-                                                {chapter.description}
-                                            </p>
-                                        )}
-                                    </div>
-                                    <div className="flex shrink-0 items-center gap-2 text-muted-foreground">
-                                        <span className="text-xs">
-                                            {chapter.duration}
-                                        </span>
-                                        {chapter.isFree ? (
-                                            <PlayCircle className="h-4 w-4 text-primary" />
-                                        ) : (
-                                            <Lock className="h-3.5 w-3.5" />
-                                        )}
-                                    </div>
-                                </li>
-                            ))}
-                        </ul>
+                                        <div className="flex shrink-0 items-center gap-2 text-muted-foreground">
+                                            <span className="text-xs">
+                                                {chapter.duration}
+                                            </span>
+                                            {chapter.isFree ? (
+                                                <PlayCircle className="h-4 w-4 text-primary" />
+                                            ) : (
+                                                <Lock className="h-3.5 w-3.5" />
+                                            )}
+                                        </div>
+                                    </li>
+                                ))}
+                            </ul>
+                        ) : (
+                            <p className="rounded-xl border border-border bg-card px-3 py-4 text-center text-sm text-muted-foreground">
+                                Este curso aún no tiene capítulos publicados.
+                            </p>
+                        )}
                     </div>
                 </div>
 

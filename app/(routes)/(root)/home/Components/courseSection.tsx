@@ -10,25 +10,28 @@ import {
     Sparkles,
 } from "lucide-react";
 import { useScrollReveal } from "../../hooks/use-scroll-reveal";
-import { CourseCard } from "../../teacher/ListCourse/CouseCard/CourseCard"; // 👈 el componente que ya tienes
-import { Course } from "@/app/generated/prisma/client";
+import { CourseCard } from "../../Components/Shared/ListCourse/CouseCard";
+import type { CourseWithChapters } from "../../courses/courseClientType";
+import { getCategoryLabel } from "@/lib/course-helpers";
 
-const COURSES_PER_PAGE = 3;
+const COURSES_PER_PAGE = 8;
 
 const categories = [
     { id: "todos", label: "Todos", icon: Sparkles },
-    { id: "instrumentos", label: "Instrumentos", icon: Music },
-    { id: "canto", label: "Canto", icon: Headphones },
-    { id: "teoria", label: "Teoria y Composicion", icon: BookOpen },
+    {
+        id: "instrumentos",
+        label: getCategoryLabel("instrumentos"),
+        icon: Music,
+    },
+    { id: "canto", label: getCategoryLabel("canto"), icon: Headphones },
+    { id: "teoria", label: getCategoryLabel("teoria"), icon: BookOpen },
 ];
 
 interface CoursesSectionProps {
-    courses: Course[];
+    courses: CourseWithChapters[];
 }
 
 export function CoursesSection({ courses }: CoursesSectionProps) {
-    console.log("cursos recibidos:", courses);
-    console.log("total:", courses.length);
     const [activeCategory, setActiveCategory] = useState("todos");
     const [visibleCount, setVisibleCount] = useState(COURSES_PER_PAGE);
 
@@ -53,7 +56,10 @@ export function CoursesSection({ courses }: CoursesSectionProps) {
     }
 
     return (
-        <section id="cursos" className="py-20 relative overflow-hidden hidden md:block">
+        <section
+            id="cursos"
+            className="py-20 relative overflow-hidden hidden md:block"
+        >
             <div className="absolute inset-0 note-pattern opacity-20" />
             <div className="absolute top-40 right-0 w-80 h-80 bg-primary/5 rounded-full blur-3xl" />
             <div className="absolute bottom-20 left-0 w-64 h-64 bg-(--gold-400)/5 rounded-full blur-3xl" />
@@ -104,7 +110,6 @@ export function CoursesSection({ courses }: CoursesSectionProps) {
                     ))}
                 </div>
 
-                {/* Grid de cursos */}
                 {filteredCourses.length === 0 ? (
                     <div className="text-center py-12">
                         <p className="text-muted-foreground">
@@ -113,13 +118,17 @@ export function CoursesSection({ courses }: CoursesSectionProps) {
                     </div>
                 ) : (
                     <>
-                        <div className="grid grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-4 lg:gap-4 xl:gap-6 px-2 sm:px-4">
+                        <div className="flex flex-wrap justify-center gap-3 sm:gap-6 items-stretch">
                             {visibleCourses.map((course, i) => (
-                                <CourseCard
+                                <div
                                     key={course.id}
-                                    course={course}
-                                    index={i}
-                                />
+                                    className="w-[calc(50%-0.375rem)] sm:w-78 flex"
+                                >
+                                    <CourseCard
+                                        course={course}
+                                        index={i}
+                                    />
+                                </div>
                             ))}
                         </div>
 
@@ -143,7 +152,6 @@ export function CoursesSection({ courses }: CoursesSectionProps) {
                     </>
                 )}
 
-                {/* Bottom CTA */}
                 <div className="text-center mt-16">
                     <div className="inline-flex flex-col sm:flex-row items-center gap-4 bg-card p-6 sm:p-8 rounded-2xl border border-border/50 shadow-sm">
                         <div className="text-center sm:text-left">

@@ -5,6 +5,7 @@ export default async function Home() {
     const courses = await prisma.course.findMany({
         where: { isPublished: true },
         orderBy: { createdAt: "desc" },
+        include: { chapters: true },
     });
 
     return (
