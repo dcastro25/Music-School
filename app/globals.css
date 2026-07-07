@@ -78,6 +78,19 @@
     --radius: 0.625rem;
 }
 
+
+.cl-userButtonPopoverActionButtonText,
+.cl-userButtonPopoverActionButton__manageAccount,
+.cl-userButtonPopoverActionButton__signOut {
+    color: #f5f0e8 !important;
+}
+
+.cl-userButtonPopoverActionButtonIcon,
+.cl-userButtonPopoverActionButton__manageAccount svg,
+.cl-userButtonPopoverActionButton__signOut svg {
+    color: #e49e22 !important;
+}
+
 .dark {
     --background: oklch(0.145 0 0);
     --foreground: oklch(0.985 0 0);

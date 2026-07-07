@@ -2,6 +2,7 @@
 
 import { routes, routesTeacher } from "./AppSidebar.data";
 import { Separator } from "@/components/ui/separator";
+import { Button } from "@/components/ui/button";
 
 import {
     Sidebar,
@@ -15,6 +16,9 @@ import {
     useSidebar,
 } from "@/components/ui/sidebar";
 
+import { Show, SignInButton, UserButton, useUser } from "@clerk/nextjs";
+
+import { LogIn } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
@@ -24,6 +28,7 @@ export function AppSidebar() {
     const { state } = useSidebar();
     const pathname = usePathname();
     const isExpanded = state === "expanded";
+    const { user } = useUser();
 
     return (
         <Sidebar
@@ -153,20 +158,49 @@ export function AppSidebar() {
 
                 {/* USER */}
                 <div className="px-4 py-4 border-t border-ring/20 bg-[#161008] flex items-center gap-3">
-                    <div className="w-9 h-9 rounded-full bg-yellow-900/30 flex items-center justify-center text-yellow-400 font-bold shrink-0">
-                        J
-                    </div>
+                    {/* Usuario con sesión iniciada */}
+                    <Show when="signed-in">
+                        <UserButton
+                            appearance={{
+                                elements: { avatarBox: "w-9 h-9" },
+                            }}
+                        />
 
-                    {isExpanded && (
-                        <div className="min-w-0">
-                            <span className="text-sm font-semibold block truncate">
-                                Juan Díaz
-                            </span>
-                            <span className="text-xs text-muted-foreground block truncate">
-                                Estudiante Pro
-                            </span>
-                        </div>
-                    )}
+                        {isExpanded && (
+                            <div className="min-w-0">
+                                <span className="text-sm font-semibold block truncate">
+                                    {user?.fullName ??
+                                        user?.username ??
+                                        "Usuario"}
+                                </span>
+                                <span className="text-xs text-muted-foreground block truncate">
+                                    Estudiante Pro
+                                </span>
+                            </div>
+                        )}
+                    </Show>
+
+                    {/* Usuario sin sesión */}
+                    <Show when="signed-out">
+                        <SignInButton mode="modal">
+                            {isExpanded ? (
+                                <Button
+                                    size="sm"
+                                    className="w-full justify-center gap-2 bg-primary text-primary-foreground hover:bg-primary/90 rounded-lg font-medium shadow-none"
+                                >
+                                    <LogIn className="h-4 w-4" />
+                                    Iniciar sesión
+                                </Button>
+                            ) : (
+                                <Button
+                                    size="icon"
+                                    className="w-9 h-9 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 shrink-0"
+                                >
+                                    <LogIn className="h-4 w-4" />
+                                </Button>
+                            )}
+                        </SignInButton>
+                    </Show>
                 </div>
             </SidebarContent>
         </Sidebar>

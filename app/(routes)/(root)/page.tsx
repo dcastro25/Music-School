@@ -13,4 +13,4 @@ export default async function Home() {
             <HomeContent courses={courses} />
         </div>
     );
-}
+}   
