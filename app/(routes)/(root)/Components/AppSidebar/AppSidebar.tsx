@@ -16,9 +16,17 @@ import {
     useSidebar,
 } from "@/components/ui/sidebar";
 
-import { Show, SignInButton, UserButton, useUser } from "@clerk/nextjs";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
-import { LogIn } from "lucide-react";
+import { Show, SignInButton, useClerk, useUser } from "@clerk/nextjs";
+
+import { LogIn, Settings, LogOut } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
@@ -29,6 +37,7 @@ export function AppSidebar() {
     const pathname = usePathname();
     const isExpanded = state === "expanded";
     const { user } = useUser();
+    const { openUserProfile, signOut } = useClerk();
 
     return (
         <Sidebar
@@ -160,24 +169,93 @@ export function AppSidebar() {
                 <div className="px-4 py-4 border-t border-ring/20 bg-[#161008] flex items-center gap-3">
                     {/* Usuario con sesión iniciada */}
                     <Show when="signed-in">
-                        <UserButton
-                            appearance={{
-                                elements: { avatarBox: "w-9 h-9" },
-                            }}
-                        />
+                        <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                                <button
+                                    type="button"
+                                    className={`
+                                        flex items-center gap-3 w-full rounded-lg
+                                        text-left cursor-pointer
+                                        hover:opacity-90 active:opacity-80
+                                        transition-opacity outline-none
+                                        ${!isExpanded ? "justify-center" : ""}
+                                    `}
+                                >
+                                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                                    <img
+                                        src={
+                                            user?.imageUrl ??
+                                            "/img/avatar-placeholder.png"
+                                        }
+                                        alt={user?.fullName ?? "Usuario"}
+                                        width={36}
+                                        height={36}
+                                        className="rounded-full shrink-0 w-9 h-9 object-cover"
+                                    />
 
-                        {isExpanded && (
-                            <div className="min-w-0">
-                                <span className="text-sm font-semibold block truncate">
-                                    {user?.fullName ??
-                                        user?.username ??
-                                        "Usuario"}
-                                </span>
-                                <span className="text-xs text-muted-foreground block truncate">
-                                    Estudiante Pro
-                                </span>
-                            </div>
-                        )}
+                                    {isExpanded && (
+                                        <div className="min-w-0">
+                                            <span className="text-sm font-semibold block truncate">
+                                                {user?.fullName ??
+                                                    user?.username ??
+                                                    "Usuario"}
+                                            </span>
+                                            <span className="text-xs text-muted-foreground block truncate">
+                                                Estudiante Pro
+                                            </span>
+                                        </div>
+                                    )}
+                                </button>
+                            </DropdownMenuTrigger>
+
+                            <DropdownMenuContent
+                                side="top"
+                                align={isExpanded ? "start" : "center"}
+                                className="w-56 bg-[#1a1410] border border-ring/20 text-foreground z-[9999]"
+                            >
+                                <div className="flex items-center gap-3 px-2 py-2">
+                                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                                    <img
+                                        src={
+                                            user?.imageUrl ??
+                                            "/img/avatar-placeholder.png"
+                                        }
+                                        alt={user?.fullName ?? "Usuario"}
+                                        width={32}
+                                        height={32}
+                                        className="rounded-full shrink-0 w-8 h-8 object-cover"
+                                    />
+                                    <div className="min-w-0">
+                                        <span className="text-sm font-semibold block truncate">
+                                            {user?.fullName ??
+                                                user?.username ??
+                                                "Usuario"}
+                                        </span>
+                                        <span className="text-xs text-muted-foreground block truncate">
+                                            {user?.username ?? ""}
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <DropdownMenuSeparator className="opacity-20" />
+
+                                <DropdownMenuItem
+                                    onClick={() => openUserProfile()}
+                                    className="gap-2 cursor-pointer hover:bg-white/5 focus:bg-white/5"
+                                >
+                                    <Settings className="h-4 w-4" />
+                                    Manage account
+                                </DropdownMenuItem>
+
+                                <DropdownMenuItem
+                                    onClick={() => signOut()}
+                                    className="gap-2 cursor-pointer hover:bg-white/5 focus:bg-white/5"
+                                >
+                                    <LogOut className="h-4 w-4" />
+                                    Sign out
+                                </DropdownMenuItem>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
                     </Show>
 
                     {/* Usuario sin sesión */}
