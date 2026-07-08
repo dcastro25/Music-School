@@ -2,15 +2,8 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import {
-    BookOpen,
-    CheckCircle2,
-    Clock,
-    CreditCard,
-    Lock,
-    PlayCircle,
-    ShoppingCart,
-} from "lucide-react";
+import Link from "next/link";
+import { BookOpen, Clock, CreditCard, Lock, PlayCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -22,7 +15,6 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog";
-import { useCart } from "./CartContext";
 import {
     getDurationLabel,
     getCourseImage,
@@ -40,9 +32,7 @@ export function CourseDetailsDialog({
     course,
     children,
 }: CourseDetailsDialogProps) {
-    const { addItem, isInCart } = useCart();
     const [open, setOpen] = useState(false);
-    const inCart = isInCart(course.id);
 
     const chapters = course.chapters ?? [];
 
@@ -160,7 +150,6 @@ export function CourseDetailsDialog({
                     </div>
                 </div>
 
-                {/* Sticky footer with price + actions */}
                 <div className="shrink-0 flex flex-col gap-3 border-t border-border bg-muted/40 p-4 sm:flex-row sm:items-center sm:justify-between sm:p-5">
                     <div>
                         <span className="text-2xl font-bold text-primary">
@@ -178,20 +167,14 @@ export function CourseDetailsDialog({
                         <Button
                             variant="outline"
                             className="flex-1 font-semibold sm:flex-none"
-                            onClick={() => addItem(course)}
-                            disabled={inCart}
+                            asChild
+                            onClick={() => setOpen(false)}
                         >
-                            {inCart ? (
-                                <>
-                                    <CheckCircle2 className="h-4 w-4" />
-                                    En el carrito
-                                </>
-                            ) : (
-                                <>
-                                    <ShoppingCart className="h-4 w-4" />
-                                    Añadir al carrito
-                                </>
-                            )}
+                            {/* TODO: ajusta esta ruta hacia tu página/route de CourseWatch */}
+                            <Link href={`/cursos/${course.slug}`}>
+                                <PlayCircle className="h-4 w-4" />
+                                Ver curso
+                            </Link>
                         </Button>
 
                         <DialogClose asChild>

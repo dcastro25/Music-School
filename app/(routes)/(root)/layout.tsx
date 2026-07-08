@@ -18,17 +18,17 @@ export default function RootLayout({
     const shouldShowFooter =
         pathname !== null &&
         !pathname.startsWith("/teacher") &&
-        !pathname.startsWith("/admin");
+        !pathname.startsWith("/admin") &&
+        !pathname.startsWith("/cursos/");
 
     return (
         <TooltipProvider>
             <SidebarProvider>
                 <CartProvider>
                     <div className="flex min-h-screen w-full overflow-hidden">
-                        {/* Sidebar */}
+
                         <AppSidebar />
 
-                        {/* Main Content */}
                         <div className="flex flex-col flex-1 min-h-screen min-w-0">
                             <Suspense fallback={null}>
                                 <Navbar />
