@@ -13,7 +13,7 @@ El objetivo actual es construir una **base sólida tanto en el frontend como en 
 
 Puedes ver una **versión inicial del proyecto en línea** en el siguiente enlace:
 
-🔗[ [https://music-school-35sp.vercel.app](https://music-school-35sp.vercel.app)](https://music-school-rouge.vercel.app)
+🔗https://music-school-rouge.vercel.app
 
 Esta demo muestra principalmente el **diseño del frontend y la estructura inicial de la plataforma**, la cual seguirá evolucionando con nuevas funcionalidades.
 
