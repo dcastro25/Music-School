@@ -25,10 +25,12 @@ export function ChapterVideo(props: ChapterVideoProps) {
                 toast.success("Video actualizado correctamente");
             } catch {
                 toast.error("Error al guardar el video");
+                return; // si falla el guardado, no propagamos el cambio hacia arriba
             }
-        } else {
-            onVideoChange?.(url);
         }
+        // Notificamos siempre al padre (capítulo nuevo o existente) para
+        // que su estado se mantenga sincronizado con lo que hay en BD.
+        onVideoChange?.(url);
     };
 
     // Modo solo lectura
@@ -78,7 +80,7 @@ export function ChapterVideo(props: ChapterVideoProps) {
             {!isEditing ? (
                 <div
                     className="group relative bg-background overflow-hidden cursor-pointer"
-                    style={{ height: video ? "100" : "100px" }}
+                    style={{ height: video ? "100px" : "100px" }}
                     onClick={() => setIsEditing(true)}
                 >
                     {video ? (

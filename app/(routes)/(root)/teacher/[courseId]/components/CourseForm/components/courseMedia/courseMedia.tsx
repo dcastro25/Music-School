@@ -11,19 +11,20 @@ import type { OurFileRouter } from "@/app/api/uploadthing/core";
 import { toast } from "sonner";
 import axios from "axios";
 import { Button } from "@/components/ui/button";
+import { Loader2 } from "lucide-react";
 
 export function CourseMedia(props: CourseImageProps) {
     const { idCourse, imageCourse, onImageChange } = props;
 
     const [isEditing, setIsEditing] = useState(false);
     const [image, setImage] = useState(imageCourse);
+    const [isUploading, setIsUploading] = useState(false);
 
     const { modules } = useModules();
     const { tags } = useTags();
 
     const onChangeImage = async (imageUrl: string) => {
         setImage(imageUrl);
-        onImageChange?.(imageUrl);
 
         // Solo guarda en BD si ya existe el curso
         if (idCourse) {
@@ -32,8 +33,13 @@ export function CourseMedia(props: CourseImageProps) {
                 toast.success("Imagen actualizada correctamente");
             } catch {
                 toast.error("Error al guardar la imagen");
+                return; // si falla el guardado, no propagamos el cambio hacia arriba
             }
         }
+
+        // Notificamos siempre al padre (curso nuevo o existente) para
+        // que su estado se mantenga sincronizado con lo que hay en BD.
+        onImageChange?.(imageUrl);
     };
 
     return (
@@ -46,7 +52,7 @@ export function CourseMedia(props: CourseImageProps) {
                         Imagen de portada
                     </span>
                     <span className="ml-auto text-xs text-muted-foreground">
-                        PNG, JPG · 5MB máx
+                        PNG, JPG · 4MB máx
                     </span>
                 </div>
 
@@ -79,14 +85,22 @@ export function CourseMedia(props: CourseImageProps) {
                     <div className="p-4 space-y-3">
                         <div className="flex flex-col items-center gap-3 border border-dashed border-border/30 rounded-xl p-8 bg-background">
                             <div className="flex items-center justify-center w-12 h-12 rounded-full bg-muted">
-                                <ImageIcon className="h-5 w-5 text-muted-foreground" />
+                                {isUploading ? (
+                                    <Loader2 className="h-5 w-5 text-muted-foreground animate-spin" />
+                                ) : (
+                                    <ImageIcon className="h-5 w-5 text-muted-foreground" />
+                                )}
                             </div>
                             <div className="text-center">
                                 <p className="text-sm font-medium text-foreground mb-1">
-                                    Arrastra tu imagen aquí
+                                    {isUploading
+                                        ? "Subiendo imagen..."
+                                        : "Arrastra tu imagen aquí"}
                                 </p>
                                 <p className="text-xs text-muted-foreground">
-                                    o selecciona un archivo
+                                    {isUploading
+                                        ? "Por favor espera"
+                                        : "o selecciona un archivo"}
                                 </p>
                             </div>
                             <span className="text-xs text-muted-foreground bg-muted px-3 py-1 rounded-full border border-border/30">
@@ -99,43 +113,60 @@ export function CourseMedia(props: CourseImageProps) {
                                     allowedContent: "hidden",
                                 }}
                                 content={{
-                                    button({ ready }) {
+                                    button({ ready, isUploading: uploading }) {
+                                        if (uploading) return "Subiendo...";
                                         return ready
                                             ? "Seleccionar imagen"
                                             : "Cargando...";
                                     },
                                 }}
+                                onUploadBegin={() => setIsUploading(true)}
                                 onClientUploadComplete={async (res) => {
                                     const url = res[0]?.ufsUrl;
                                     if (url) await onChangeImage(url);
+                                    setIsUploading(false);
                                     setIsEditing(false);
                                 }}
                                 onUploadError={() => {
                                     toast.error("Error al subir la imagen");
+                                    setIsUploading(false);
                                     setIsEditing(false);
                                 }}
                             />
                         </div>
                         <Button
                             type="button"
+                            disabled={isUploading}
                             onClick={() => setIsEditing(false)}
                             className="w-full py-2 text-sm text-muted-foreground bg-transparent border border-border/30 rounded-lg hover:bg-muted transition-colors"
                         >
-                            Cancelar
+                            {isUploading ? (
+                                <span className="flex items-center gap-2">
+                                    <Loader2 className="h-4 w-4 animate-spin" />
+                                    Subiendo...
+                                </span>
+                            ) : (
+                                "Cancelar"
+                            )}
                         </Button>
                     </div>
                 )}
 
                 <div className="flex items-center gap-2 px-4 py-2 border-t border-border/30">
-                    <span className="text-xs text-emerald-500">✓</span>
+                    {isUploading ? (
+                        <Loader2 className="h-3 w-3 text-muted-foreground animate-spin" />
+                    ) : (
+                        <span className="text-xs text-emerald-500">✓</span>
+                    )}
                     <span className="text-xs text-muted-foreground">
-                        {image
-                            ? "Imagen guardada"
-                            : "Sin imagen — se usará la imagen por defecto"}
+                        {isUploading
+                            ? "Subiendo imagen..."
+                            : image
+                              ? "Imagen guardada"
+                              : "Sin imagen — se usará la imagen por defecto"}
                     </span>
                 </div>
             </div>
-
         </div>
     );
 }

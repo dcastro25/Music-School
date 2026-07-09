@@ -4,6 +4,7 @@ import { UploadThingError } from "uploadthing/server";
 const f = createUploadthing();
 
 const auth = (req: Request) => ({ id: "fakeId" });
+
 export const ourFileRouter = {
     imageUploader: f({
         image: {
@@ -16,7 +17,10 @@ export const ourFileRouter = {
     chapterVideo: f({
         video: { maxFileCount: 1, maxFileSize: "512GB" },
     }).onUploadComplete(({ file }) => {
-        return { url: file.url };
+        // file.url es el formato legacy (utfs.io) y puede no resolver
+        // correctamente. file.ufsUrl es el campo recomendado y estable
+        // (formato https://<APP_ID>.ufs.sh/f/<key>).
+        return { url: file.ufsUrl };
     }),
 } satisfies FileRouter;
 

@@ -457,7 +457,28 @@ export function CourseChapter({
                                                                             videoUrl={
                                                                                 chapter.videoUrl
                                                                             }
-                                                                            readOnly={!isEditing} 
+                                                                            readOnly={
+                                                                                !isEditing
+                                                                            }
+                                                                            onVideoChange={(
+                                                                                url,
+                                                                            ) =>
+                                                                                onChaptersChange(
+                                                                                    chapters.map(
+                                                                                        (
+                                                                                            c,
+                                                                                        ) =>
+                                                                                            c.id ===
+                                                                                            chapter.id
+                                                                                                ? {
+                                                                                                      ...c,
+                                                                                                      videoUrl:
+                                                                                                          url,
+                                                                                                  }
+                                                                                                : c,
+                                                                                    ),
+                                                                                )
+                                                                            }
                                                                         />
                                                                     </div>
                                                                 </div>

@@ -154,11 +154,8 @@ export function FormChapter(props: formChapterProps) {
                             Video
                         </p>
                         <ChapterVideo
-                        
-                        
                             videoUrl={videoUrl}
                             onVideoChange={(url) => setVideoUrl(url)}
-                            
                         />
                     </div>
                 </div>
