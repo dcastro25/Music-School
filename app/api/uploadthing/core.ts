@@ -20,7 +20,8 @@ export const ourFileRouter = {
         // file.url es el formato legacy (utfs.io) y puede no resolver
         // correctamente. file.ufsUrl es el campo recomendado y estable
         // (formato https://<APP_ID>.ufs.sh/f/<key>).
-        return { url: file.ufsUrl };
+        const url = file.ufsUrl ?? file.url;
+        return { url, ufsUrl: url };
     }),
 } satisfies FileRouter;
 

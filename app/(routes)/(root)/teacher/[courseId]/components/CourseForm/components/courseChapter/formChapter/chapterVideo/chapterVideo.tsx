@@ -146,7 +146,13 @@ export function ChapterVideo(props: ChapterVideoProps) {
                             }}
                             onUploadBegin={() => setIsUploading(true)}
                             onClientUploadComplete={async (res) => {
-                                const url = res[0]?.serverData?.url;
+                                const upload = res[0];
+                                const url =
+                                    upload?.ufsUrl ??
+                                    upload?.serverData?.url ??
+                                    upload?.serverData?.ufsUrl ??
+                                    upload?.url;
+
                                 if (url) await onSubmit(url);
                                 setIsUploading(false);
                                 setIsEditing(false);
