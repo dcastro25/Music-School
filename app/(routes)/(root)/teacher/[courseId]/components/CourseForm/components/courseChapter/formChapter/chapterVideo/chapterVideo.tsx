@@ -64,7 +64,12 @@ export function ChapterVideo(props: ChapterVideoProps) {
             </div>
         );
     }
-
+    console.log(
+        "RENDER ChapterVideo — video state:",
+        video,
+        "prop videoUrl:",
+        videoUrl,
+    );
     return (
         <div className="rounded-xl border border-border/50 bg-card overflow-hidden">
             <div className="flex items-center gap-2 px-4 py-3 border-b border-border/30">
