@@ -62,8 +62,7 @@ export function HeroSectionMobile() {
     }
 
     return (
-        <section className="mx-auto flex flex-col gap-3 bg-background px-4 pt-5 pb-15 md:hidden">
-            {/* Top bar */}
+        <section className="mx-auto flex flex-col gap-3 bg-background px-4 pt-5 md:hidden">
             <header className="flex items-center text-xs gap-1">
                 <MapPin className="w-4 h-4" />
                 <span
@@ -73,8 +72,6 @@ export function HeroSectionMobile() {
                     Monteria / Lorica, Col
                 </span>
             </header>
-
-            {/* Hero copy */}
             <div className="flex flex-col gap-3">
                 <div>
                     <span className="text-white/80 text-4xl">Domina tu</span>
@@ -88,7 +85,6 @@ export function HeroSectionMobile() {
                 </p>
             </div>
 
-            {/* Mobile swipeable carousel */}
             <div
                 ref={scrollerRef}
                 onScroll={handleScroll}
@@ -109,7 +105,6 @@ export function HeroSectionMobile() {
                         <div className="absolute inset-0 bg-linear-to-r from-black via-black/75 to-black/5" />
                         <div className="absolute inset-0 bg-linear-to-b from-black/15 via-transparent to-black/10" />
 
-                        {/* Contenido */}
                         <div className="relative flex flex-col gap-3 px-1.5">
                             <span className="w-fit rounded-full  px-3 py-1 text-xs font-medium text-white/70 p-2 bg-white/10 mt-2">
                                 {slide.tag}
@@ -141,7 +136,6 @@ export function HeroSectionMobile() {
                 ))}
             </div>
 
-            {/* Carousel dots */}
             <div className="flex justify-center gap-2">
                 {slides.map((_, i) => (
                     <button
@@ -157,15 +151,11 @@ export function HeroSectionMobile() {
                 ))}
             </div>
 
-            {/* Categories */}
             <div className="flex flex-col gap-4">
                 <div className="flex items-center justify-between">
                     <h2 className="text-lg font-bold text-white/70">
                         Categorías
                     </h2>
-                    <Button variant="outline" className="h-8 px-4 text-sm text-foreground/60 border-foreground/60">
-                        Ver todo
-                    </Button>
                 </div>
                 <div className="flex  justify-evenly w-full gap-3  pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                     {categories.map(({ label, Icon }) => (

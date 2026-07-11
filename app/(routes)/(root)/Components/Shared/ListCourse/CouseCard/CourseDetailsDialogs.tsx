@@ -34,7 +34,9 @@ export function CourseDetailsDialog({
 }: CourseDetailsDialogProps) {
     const [open, setOpen] = useState(false);
 
-    const chapters = course.chapters ?? [];
+    const chapters = [...(course.chapters ?? [])].sort(
+        (a, b) => a.position - b.position,
+    );
 
     const totalMinutes = chapters.reduce((sum, c) => {
         const m = Number.parseInt(c.duration ?? "0");
@@ -67,15 +69,12 @@ export function CourseDetailsDialog({
                     </div>
                 </div>
 
-                {/* Contenido scrolleable */}
                 <div className="flex-1 min-h-0 overflow-y-auto p-4 sm:p-6">
                     <DialogHeader className="mb-4 text-left">
                         <DialogDescription className="text-pretty text-sm leading-relaxed text-muted-foreground">
                             {course.description}
                         </DialogDescription>
                     </DialogHeader>
-
-                    {/* Stats */}
                     <div className="mb-6 grid grid-cols-2 gap-3">
                         <Stat
                             icon={Clock}
@@ -89,7 +88,6 @@ export function CourseDetailsDialog({
                         />
                     </div>
 
-                    {/* Chapters */}
                     <div>
                         <div className="mb-3 flex items-center justify-between">
                             <h4 className="text-sm font-semibold uppercase tracking-wider text-foreground">
@@ -101,13 +99,13 @@ export function CourseDetailsDialog({
                         </div>
                         {chapters.length > 0 ? (
                             <ul className="overflow-hidden rounded-xl border border-border">
-                                {chapters.map((chapter) => (
+                                {chapters.map((chapter, index) => (
                                     <li
                                         key={chapter.id}
                                         className="flex items-start gap-3 border-b border-border bg-card px-3 py-3 last:border-b-0 sm:px-4"
                                     >
                                         <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-secondary text-xs font-semibold text-secondary-foreground">
-                                            {chapter.position}
+                                            {index + 1}
                                         </span>
                                         <div className="min-w-0 flex-1">
                                             <div className="flex items-center gap-2">
@@ -170,7 +168,7 @@ export function CourseDetailsDialog({
                             asChild
                             onClick={() => setOpen(false)}
                         >
-                            {/* TODO: ajusta esta ruta hacia tu página/route de CourseWatch */}
+
                             <Link href={`/cursos/${course.slug}`}>
                                 <PlayCircle className="h-4 w-4" />
                                 Ver curso

@@ -4,6 +4,7 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Music2, Drum, Waves, ArrowRight } from "lucide-react";
 import { useScrollReveal } from "../../hooks/use-scroll-reveal";
+import Link from "next/link";
 
 const instruments = [
     {
@@ -112,7 +113,9 @@ function InstrumentCard({
             </div>
 
             {/* Content */}
-            <div className={`flex flex-col mt-8 sm:mt-10 lg:mt-0 ${isReversed ? "lg:order-1" : ""}`}>
+            <div
+                className={`flex flex-col mt-8 sm:mt-10 lg:mt-0 ${isReversed ? "lg:order-1" : ""}`}
+            >
                 <div className="flex items-center gap-3 sm:gap-4 mb-4 sm:mb-5">
                     <div className="w-12 h-12 sm:w-16 sm:h-16 bg-primary/10 rounded-2xl flex items-center justify-center transition-transform duration-300 hover:scale-110 hover:rotate-3 shrink-0">
                         <instrument.icon className="h-6 w-6 sm:h-8 sm:w-8 text-primary" />
@@ -142,11 +145,12 @@ function InstrumentCard({
                         </div>
                     ))}
                 </div>
-
-                <Button className="w-full sm:w-auto bg-primary text-primary-foreground hover:bg-primary/90 font-semibold shadow-lg shadow-primary/20 transition-transform duration-300 hover:-translate-y-0.5 group/btn">
-                    Explorar Cursos de {instrument.name}
-                    <ArrowRight className="h-4 w-4 ml-2 transition-transform group-hover/btn:translate-x-1" />
-                </Button>
+                <Link href="/courses"  >
+                    <Button className="w-full sm:w-auto bg-primary text-primary-foreground hover:bg-primary/90 font-semibold shadow-lg shadow-primary/20 transition-transform duration-300 hover:-translate-y-0.5 group/btn">
+                        Explorar Cursos de {instrument.name}
+                        <ArrowRight className="h-4 w-4 ml-2 transition-transform group-hover/btn:translate-x-1" />
+                    </Button>
+                </Link>
             </div>
         </div>
     );
@@ -181,7 +185,8 @@ export function InstrumentsSection() {
                         </span>
                     </div>
                     <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white/70 mb-4 sm:mb-5 text-balance leading-tight">
-                        Los <span className="text-primary">Tres Pilares</span> del Vallenato
+                        Los <span className="text-primary">Tres Pilares</span>{" "}
+                        del Vallenato
                     </h2>
                     <p className="text-muted-foreground font-serif">
                         Acordeon, caja y guacharaca: la trilogia sagrada que da

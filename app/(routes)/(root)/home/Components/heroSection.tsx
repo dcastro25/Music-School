@@ -4,6 +4,7 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 import { Play, Music, Users, Award, Star } from "lucide-react";
 import { useCountUp } from "../../hooks/use-scroll-reveal";
+import Link from "next/link";
 
 function StatCounter({
     end,
@@ -37,16 +38,11 @@ export function HeroSection() {
             id="inicio"
             className="relative w-full bg-[#0a0700] min-h-[calc(100vh-80px)] flex-col mt-4 hidden sm:flex"
         >
-            {/* Brillo decorativo fondo */}
             <div className="absolute pointer-events-none top-[20%] left-[30%] w-[500px] h-[500px] rounded-full bg-[radial-gradient(circle,_#b8860b0a_0%,_transparent_70%)]" />
 
-            {/* Contenedor principal — crece para ocupar el espacio disponible */}
             <div className="container mx-auto px-6 lg:px-12 xl:px-16 2xl:px-24 relative z-10 flex flex-col flex-1">
-                {/* ── Fila principal: texto | imagen ── */}
                 <div className="flex-1 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-[1fr_420px] 2xl:grid-cols-[1fr_500px] gap-10 lg:gap-16 2xl:gap-24 items-center py-12 lg:py-16">
-                    {/* ── Columna izquierda: texto ── */}
                     <div className="flex flex-col justify-center ">
-                        {/* Rating */}
                         <div className="flex items-center gap-2 mb-5">
                             <div className="flex">
                                 {[1, 2, 3, 4, 5].map((i) => (
@@ -60,8 +56,6 @@ export function HeroSection() {
                                 +500 estudiantes satisfechos
                             </span>
                         </div>
-
-                        {/* Badge */}
                         <div className="inline-flex w-fit items-center gap-2 border border-primary/25 bg-primary/[0.08] px-4 py-1.5 rounded-full mb-6">
                             <Music className="h-3 w-3 text-primary" />
                             <span className="text-xs text-primary font-semibold uppercase tracking-widest">
@@ -69,7 +63,6 @@ export function HeroSection() {
                             </span>
                         </div>
 
-                        {/* Título */}
                         <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold leading-tight mb-6 text-white/80">
                             Aprende el Arte del{" "}
                             <span className="relative inline-block text-primary">
@@ -91,18 +84,22 @@ export function HeroSection() {
                             con los Mejores Maestros
                         </h1>
 
-                        {/* Descripción */}
                         <p className="text-base lg:text-lg 2xl:text-xl font-serif leading-relaxed text-white/55 mb-10 max-w-lg 2xl:max-w-2xl">
                             Descubre la magia de la música caribeña colombiana.
                             Cursos de acordeón, caja, guacharaca y las canciones
                             que han marcado generaciones.
                         </p>
 
-                        {/* Botones */}
                         <div className="flex  justify-center flex-wrap gap-10">
-                            <Button size="lg" variant="default" className="px-5 py-5  ">
-                                Comenzar Mi Viaje Musical
-                            </Button>
+                            <Link href={"/courses"}>
+                                <Button
+                                    size="lg"
+                                    variant="default"
+                                    className="px-5 py-5  "
+                                >
+                                    Comenzar Mi Viaje Musical
+                                </Button>
+                            </Link>
                             <Button
                                 size="lg"
                                 variant="outline"
@@ -137,13 +134,11 @@ export function HeroSection() {
                         </div>
                     </div>
 
-                    {/* ── Columna derecha: imagen ── */}
                     <div className="hidden lg:flex items-center justify-center py-16">
                         <div
                             className="relative"
                             style={{ width: "380px", height: "520px" }}
                         >
-                            {/* Sombra decorativa detrás */}
                             <div
                                 style={{
                                     position: "absolute",
@@ -156,7 +151,6 @@ export function HeroSection() {
                                 }}
                             />
 
-                            {/* Card principal */}
                             <div
                                 style={{
                                     position: "relative",
@@ -179,7 +173,6 @@ export function HeroSection() {
                                         objectPosition: "center top",
                                     }}
                                 />
-                                {/* Gradiente inferior sobre imagen */}
                                 <div
                                     style={{
                                         position: "absolute",
@@ -193,7 +186,6 @@ export function HeroSection() {
                                 />
                             </div>
 
-                            {/* Badge Nuevo Semestre */}
                             <div
                                 style={{
                                     position: "absolute",
@@ -218,7 +210,6 @@ export function HeroSection() {
                                 </span>
                             </div>
 
-                            {/* Badge Clases en Vivo */}
                             <div
                                 style={{
                                     position: "absolute",
@@ -281,7 +272,6 @@ export function HeroSection() {
                                 </div>
                             </div>
 
-                            {/* Puntitos decorativos */}
                             <div
                                 style={{
                                     position: "absolute",

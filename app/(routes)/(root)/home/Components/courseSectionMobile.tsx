@@ -10,6 +10,8 @@ import {
 } from "lucide-react";
 import { CourseCard } from "../../Components/Shared/ListCourse/CouseCard";
 import type { CourseWithChapters } from "../../courses/courseClientType";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 interface MobileCourseCarouselProps {
     courses: CourseWithChapters[];
 }
@@ -25,7 +27,6 @@ type CategoryId = (typeof CATEGORIES)[number]["id"];
 
 const CARD_WIDTH = 220;
 const CARD_GAP = 12;
-
 
 export function MobileCourseCarousel({ courses }: MobileCourseCarouselProps) {
     const [activeCategory, setActiveCategory] = useState<CategoryId>("todos");
@@ -106,10 +107,12 @@ export function MobileCourseCarousel({ courses }: MobileCourseCarouselProps) {
                             Nuestros Cursos
                         </span>
                     </div>
-                    <button className="text-xs text-primary flex items-center gap-1 font-medium">
-                        Ver todos
-                        <ArrowRight className="h-3 w-3" />
-                    </button>
+                    <Link href={"/courses"}>
+                        <Button variant={"outline"} size={"xs"}>
+                            Ver todos
+                            <ArrowRight className="h-3 w-3" />
+                        </Button>
+                    </Link>
                 </div>
 
                 <h2 className="text-2xl font-bold text-foreground mb-4 leading-tight text-center">
@@ -181,7 +184,10 @@ export function MobileCourseCarousel({ courses }: MobileCourseCarouselProps) {
                             </div>
                         </div>
 
-                        <div className="flex justify-center gap-1.5 mt-4" aria-hidden>
+                        <div
+                            className="flex justify-center gap-1.5 mt-4"
+                            aria-hidden
+                        >
                             {filteredCourses.slice(0, 6).map((_, i) => (
                                 <span
                                     key={i}

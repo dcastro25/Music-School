@@ -112,7 +112,7 @@ export function CourseWatchClient({
             {/* Header */}
             <div className="mb-6 flex flex-col gap-4">
                 <Link
-                    href="/cursos"
+                    href="/courses"
                     className="inline-flex w-fit items-center gap-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
                 >
                     <ArrowLeft className="h-4 w-4" />
@@ -209,7 +209,6 @@ export function CourseWatchClient({
                         </p>
                     )}
 
-                    {/* Marcar como completado */}
                     <div
                         className={cn(
                             "mt-5 flex flex-col items-start justify-between gap-3 rounded-xl border p-3.5 transition-colors sm:flex-row sm:items-center sm:p-4",
@@ -265,11 +264,10 @@ export function CourseWatchClient({
                         </Button>
                     </div>
 
-                    {/* Navegación */}
                     <div className="mt-4 flex items-center justify-between gap-3 border-t border-border/60 pt-4">
                         {prevChapter ? (
                             <Button
-                                variant="ghost"
+                                variant="outline"
                                 size="sm"
                                 className="font-medium text-muted-foreground"
                                 asChild

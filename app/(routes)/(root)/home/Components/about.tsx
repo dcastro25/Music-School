@@ -46,7 +46,6 @@ const achievements = [
 ];
 
 export function About() {
-    const { ref: headerRef, isVisible: headerVisible } = useScrollReveal();
     const { ref: imagesRef, isVisible: imagesVisible } = useScrollReveal();
     const { ref: contentRef, isVisible: contentVisible } = useScrollReveal();
 
@@ -55,13 +54,12 @@ export function About() {
             id="nosotros"
             className="pt-10 pb-7 bg-secondary/40 relative overflow-hidden"
         >
-            {/* Background decoration */}
             <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
             <div className="absolute bottom-0 left-0 w-72 h-72 bg-[var(--gold-400)]/5 rounded-full blur-3xl" />
 
             <div className="container mx-auto px-4 md:px-10 md:pl-12 relative">
                 <div className="grid lg:grid-cols-2 gap-10 md:gap-14 lg:gap-20 items-center">
-                    {/* Image Side */}
+
                     <div
                         ref={imagesRef}
 
