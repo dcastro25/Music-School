@@ -17,6 +17,8 @@ function createPrismaClient() {
             connectionTimeoutMillis: 10_000,
         });
 
+    // Evita que un error de conexión idle (típico en Postgres serverless)
+    // tumbe el proceso o deje el pool en mal estado.
     pool.on("error", (err) => {
         console.error("[PG_POOL_ERROR]", err);
     });
