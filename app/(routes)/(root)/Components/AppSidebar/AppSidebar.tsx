@@ -39,6 +39,8 @@ export function AppSidebar() {
     const { user } = useUser();
     const { openUserProfile, signOut } = useClerk();
 
+    const isAdmin = user?.publicMetadata?.role === "admin";
+
     return (
         <Sidebar
             collapsible="icon"
@@ -118,51 +120,55 @@ export function AppSidebar() {
                         </SidebarMenu>
                     </SidebarGroup>
 
-                    <Separator className="opacity-20" />
+                    {/* DOCENCIA — solo visible para admins */}
+                    {isAdmin && (
+                        <>
+                            <Separator className="opacity-20" />
 
-                    {/* DOCENCIA */}
-                    <SidebarGroup>
-                        {isExpanded && (
-                            <SidebarGroupLabel className="text-[10px] px-3 text-muted-foreground/70 uppercase">
-                                Docencia
-                            </SidebarGroupLabel>
-                        )}
+                            <SidebarGroup>
+                                {isExpanded && (
+                                    <SidebarGroupLabel className="text-[10px] px-3 text-muted-foreground/70 uppercase">
+                                        Docencia
+                                    </SidebarGroupLabel>
+                                )}
 
-                        <SidebarMenu className="mt-2 space-y-1">
-                            {routesTeacher.map((item) => {
-                                const isActive = pathname === item.url;
+                                <SidebarMenu className="mt-2 space-y-1">
+                                    {routesTeacher.map((item) => {
+                                        const isActive = pathname === item.url;
 
-                                return (
-                                    <SidebarMenuItem key={item.id}>
-                                        <SidebarMenuButton
-                                            asChild
-                                            tooltip={item.title}
-                                        >
-                                            <Link
-                                                href={item.url}
-                                                className={`
-                                                    flex items-center gap-3 px-3 py-2 rounded-xl
-                                                    transition-all duration-200
-                                                    cursor-pointer
-                                                    hover:bg-white/5
-                                                    ${isActive ? "bg-yellow-900/30 text-yellow-400" : "text-muted-foreground hover:text-foreground"}
-                                                    ${!isExpanded ? "justify-center" : ""}
-                                                `}
-                                            >
-                                                <item.icon className="h-5 w-5 shrink-0" />
+                                        return (
+                                            <SidebarMenuItem key={item.id}>
+                                                <SidebarMenuButton
+                                                    asChild
+                                                    tooltip={item.title}
+                                                >
+                                                    <Link
+                                                        href={item.url}
+                                                        className={`
+                                                            flex items-center gap-3 px-3 py-2 rounded-xl
+                                                            transition-all duration-200
+                                                            cursor-pointer
+                                                            hover:bg-white/5
+                                                            ${isActive ? "bg-yellow-900/30 text-yellow-400" : "text-muted-foreground hover:text-foreground"}
+                                                            ${!isExpanded ? "justify-center" : ""}
+                                                        `}
+                                                    >
+                                                        <item.icon className="h-5 w-5 shrink-0" />
 
-                                                {isExpanded && (
-                                                    <span className="text-sm font-medium">
-                                                        {item.title}
-                                                    </span>
-                                                )}
-                                            </Link>
-                                        </SidebarMenuButton>
-                                    </SidebarMenuItem>
-                                );
-                            })}
-                        </SidebarMenu>
-                    </SidebarGroup>
+                                                        {isExpanded && (
+                                                            <span className="text-sm font-medium">
+                                                                {item.title}
+                                                            </span>
+                                                        )}
+                                                    </Link>
+                                                </SidebarMenuButton>
+                                            </SidebarMenuItem>
+                                        );
+                                    })}
+                                </SidebarMenu>
+                            </SidebarGroup>
+                        </>
+                    )}
                 </div>
 
                 {/* USER */}
